@@ -72,9 +72,9 @@ export class ScrollOrchestrator {
           this.reasoningCore.setScrollProgress(progress);
         }
 
-        // 2. Stage 1: Hero Phase Exit (0.00 -> 0.22)
+        // 2. Stage 1: Intro Phase Exit (0.00 -> 0.22)
         const p1 = gsap.utils.clamp(0, 1, gsap.utils.mapRange(0.00, 0.22, 0, 1, progress));
-        gsap.set('.stage-hero-content', {
+        gsap.set('.stage-intro-content', {
           yPercent: -80 * p1,
           opacity: 1 - p1,
         });
@@ -88,7 +88,7 @@ export class ScrollOrchestrator {
         // Stage 2 Title entrance (0.20 -> 0.35)
         const p2Text = gsap.utils.clamp(0, 1, gsap.utils.mapRange(0.20, 0.35, 0, 1, progress));
         const p2TextExit = gsap.utils.clamp(0, 1, gsap.utils.mapRange(0.40, 0.48, 0, 1, progress));
-        gsap.set('.stage-strata-title', {
+        gsap.set('.stage-mask-title', {
           opacity: p2Text * (1 - p2TextExit),
           y: (1 - p2Text) * 40 - p2TextExit * 40,
         });

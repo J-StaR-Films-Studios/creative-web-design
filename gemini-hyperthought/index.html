@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>GEMINI 3.7 // ARCHITECTURE OF HYPERTHOUGHT</title>
-  <meta name="description" content="An interactive GPU-accelerated journey through the latent hyperspace of Gemini 3.7 High Reasoning." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <title>Gemini 3.7 Pro — High Reasoning</title>
+  <meta name="description" content="Gemini 3.7 Pro. An advanced multimodal intelligence architecture engineered for deep, deliberate reasoning." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ffffff'/></svg>" />
   <link rel="stylesheet" href="/src/styles/main.css" />
 </head>
 <body>
 
-  <!-- Semantic Dual-DOM Accessibility Anchor -->
-  <h1 class="sr-only">Gemini 3.7: Architecture of Hyperthought — Interactive High Reasoning Metaspace</h1>
+  <!-- Semantic Dual-DOM Accessibility Structure -->
+  <h1 class="sr-only">Gemini 3.7 Pro: High Reasoning Architecture and Extended Thinking Engine</h1>
 
-  <!-- 00. Cinematic Shutter Transition Curtain (z-index: 99999) -->
+  <!-- 00. Cinematic Curtain Transition (z-index: 99999) -->
   <div class="transition-container" aria-hidden="true">
     <div class="shutter-row row-top">
       <div class="shutter-block"></div>
@@ -33,20 +33,24 @@
     </div>
   </div>
 
-  <!-- 01. Site Header & Telemetry HUD (z-index: 100) -->
+  <!-- 01. Apple Frosted Glass Header (z-index: 100) -->
   <header class="site-header">
-    <div class="brand-mark">
-      <span class="brand-logo-pill">3.7</span>
-      <span class="brand-title">GEMINI // HYPERTHOUGHT</span>
+    <div class="brand-wrapper">
+      <span class="brand-icon">✦</span>
+      <span class="brand-title">Gemini 3.7 Pro</span>
     </div>
-    <div class="header-controls">
-      <button class="nav-link" id="navHero">Void</button>
-      <button class="nav-link" id="navStrata">Strata</button>
-      <button class="nav-link" id="navCrucible">Crucible</button>
-      <button class="nav-link" id="navSpecs">Specs</button>
-      <button class="audio-toggle-btn" id="audioToggleBtn" title="Toggle Procedural Web Audio Engine">
-        <span class="audio-pulse-indicator"></span>
-        <span id="audioStatusText">AUDIO: MUTED</span>
+
+    <nav class="header-nav">
+      <button class="nav-link" id="navOverview">Overview</button>
+      <button class="nav-link" id="navArchitecture">Architecture</button>
+      <button class="nav-link" id="navBench">Thinking Bench</button>
+      <button class="nav-link" id="navSpecs">Specifications</button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="audio-pill-btn" id="audioToggleBtn" title="Toggle Tactile Audio Feedback">
+        <span class="audio-dot"></span>
+        <span id="audioStatusText">Sound</span>
       </button>
     </div>
   </header>
@@ -55,87 +59,83 @@
   <div id="fluidCanvasContainer" aria-hidden="true"></div>
   <div id="threeCanvasContainer" aria-hidden="true"></div>
 
-  <!-- 03. Fixed Reasoning Budget HUD Panel (z-index: 90) -->
-  <div class="budget-hud-panel" id="budgetHud">
-    <span class="budget-label">REASONING BUDGET:</span>
-    <div class="budget-buttons">
-      <button class="budget-btn" data-budget="1">1X</button>
-      <button class="budget-btn" data-budget="8">8X</button>
-      <button class="budget-btn active" data-budget="64">64X</button>
-      <button class="budget-btn" data-budget="512">512X MAX</button>
+  <!-- 03. Apple Segmented Thinking Depth HUD (z-index: 90) -->
+  <div class="budget-segmented-hud" id="budgetHud">
+    <span class="budget-hud-title">Thinking Budget</span>
+    <div class="segmented-group">
+      <button class="segmented-btn" data-budget="1">Standard</button>
+      <button class="segmented-btn" data-budget="8">8X</button>
+      <button class="segmented-btn active" data-budget="64">64X Pro</button>
+      <button class="segmented-btn" data-budget="512">512X Max</button>
     </div>
   </div>
 
   <!-- Main Scrollable Flow -->
   <main id="smoothScrollWrapper">
 
-    <!-- HERO SECTION: Sand Typography Decomposition (z-index: 20) -->
+    <!-- HERO SECTION (z-index: 20) -->
     <section class="hero-section" id="sectionHero">
       <canvas id="sandTextCanvas"></canvas>
 
-      <div class="hero-overlay-ui">
-        <div class="hero-top-meta">
-          <div class="meta-pill">HYPER-REASONING ENGINE ONLINE</div>
-          <div class="meta-pill">RECURSIVE LATENT DEPTH: 64 LAYERS</div>
-        </div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Introducing High Reasoning</div>
+        <h2 class="hero-heading">Deliberate intelligence.<br />At every scale.</h2>
+        <p class="hero-subheading">
+          Gemini 3.7 Pro introduces extended thinking mode. It dynamically allocates computational depth,
+          validates intermediate proofs, and reasons through complex logic before producing a single token.
+        </p>
 
-        <div class="hero-bottom-controls">
-          <div class="text-morph-selector">
-            <button class="morph-pill-btn active" data-index="0">GEMINI 3.7</button>
-            <button class="morph-pill-btn" data-index="1">HIGH REASONING</button>
-            <button class="morph-pill-btn" data-index="2">THOUGHT SYNTHESIS</button>
-            <button class="morph-pill-btn" data-index="3">RECURSIVE LATENT</button>
-          </div>
-
-          <div class="scroll-indicator">
-            <div class="mouse-icon"></div>
-            <span>Scroll to Traverse</span>
-          </div>
+        <div class="hero-cta-group">
+          <button class="btn-primary" id="btnExploreArch">Explore Architecture</button>
+          <button class="btn-secondary" id="btnTryBench">Launch Bench</button>
         </div>
+      </div>
+
+      <div class="hero-bottom-bar">
+        <span class="hero-tag">Silicon-Engineered Precision</span>
+        <span class="scroll-hint">Scroll to explore ↓</span>
       </div>
     </section>
 
-    <!-- PINNED SCROLLYTELLING TRACK: 400% Viewport (z-index: 30) -->
+    <!-- PINNED SCROLLYTELLING TRACK (400% Viewport) (z-index: 30) -->
     <section class="scrolly-pinned-container" id="sectionStrata">
 
-      <!-- Stage 1: Headline Exit & Transition -->
+      <!-- Stage 1: Narrative Transition -->
       <div class="scrolly-stage">
-        <div class="stage-hero-content">
-          <div class="hero-sub-eyebrow">COGNITIVE MANIFOLD</div>
-          <h2 class="hero-main-heading">BEYOND SIMPLE<br />NEXT-TOKEN PREDICTION</h2>
+        <div class="stage-intro-content">
+          <div class="stage-eyebrow">The Architecture</div>
+          <h2 class="stage-heading">Engineered from first principles for deep thinking.</h2>
         </div>
       </div>
 
-      <!-- Stage 2: Circular Mask Expansion -->
+      <!-- Stage 2: Circular Mask Revelation -->
       <div class="circular-theme-mask">
-        <div class="stage-strata-title">
-          <span class="strata-number">STRATA // 02</span>
-          <h2 class="strata-heading">RECURSIVE SELF-CORRECTION</h2>
-          <p class="strata-desc">
-            Continuous internal verification passes branch through tree-of-thought DAGs,
-            pruning hallucinated paths before reaching the output projection layer.
+        <div class="stage-mask-title">
+          <h2 class="stage-mask-heading">Self-Correction by Design.</h2>
+          <p class="stage-mask-desc">
+            Rather than rushing to output, the core forms branching hypotheses,
+            audits counterfactual logic, and converges on provably sound conclusions.
           </p>
         </div>
       </div>
 
-      <!-- Stage 3: Split-Card 3D Spatial Flip Deck -->
+      <!-- Stage 3: Apple Precision 3D Split Cards -->
       <div class="scrolly-stage">
         <div class="cards-wrapper">
 
           <!-- Card 1 -->
           <div class="split-card" id="card-1">
             <div class="card-face card-front">
-              <span class="card-badge">01 / ARCHITECTURE</span>
-              <h3 class="card-title">Multi-Vector Attention Waves</h3>
-              <div class="card-metric">128M</div>
+              <span class="card-badge">Computational Depth</span>
+              <h3 class="card-title">Dynamic Compute Allocation</h3>
+              <div class="card-metric">64,000</div>
             </div>
             <div class="card-face card-back">
-              <h3>Sparse Hyper-Tensors</h3>
-              <p>Dynamic cross-layer routing isolates high-entropy tokens and allocates exponential compute where logical friction is maximal.</p>
+              <h3>Adaptive Scaling</h3>
+              <p>Scales token thinking budget based on problem friction—from instant answers to deep mathematical theorems.</p>
               <div class="tag-list">
-                <span class="tag">Mixture-of-Depth</span>
-                <span class="tag">Flash-Attention 4</span>
-                <span class="tag">KV Cache Pruning</span>
+                <span class="tag">Zero Latency Waste</span>
+                <span class="tag">Dynamic Pruning</span>
               </div>
             </div>
           </div>
@@ -143,17 +143,16 @@
           <!-- Card 2 -->
           <div class="split-card" id="card-2">
             <div class="card-face card-front">
-              <span class="card-badge">02 / REASONING</span>
-              <h3 class="card-title">Tree-of-Thought Search DAG</h3>
-              <div class="card-metric">512X</div>
+              <span class="card-badge">Causal Integrity</span>
+              <h3 class="card-title">Tree-of-Thought Search</h3>
+              <div class="card-metric">99.8%</div>
             </div>
             <div class="card-face card-back">
-              <h3>Counterfactual Proofs</h3>
-              <p>Explores parallel solution branches via Monte Carlo rollouts, validating intermediate axioms before terminal convergence.</p>
+              <h3>Proof Verification</h3>
+              <p>Iteratively validates premises against formal bounds, discarding unsound branches before commitment.</p>
               <div class="tag-list">
-                <span class="tag">SMT Verification</span>
+                <span class="tag">Formal Logic</span>
                 <span class="tag">Backtracking</span>
-                <span class="tag">Dual Heuristics</span>
               </div>
             </div>
           </div>
@@ -161,16 +160,16 @@
           <!-- Card 3 -->
           <div class="split-card" id="card-3">
             <div class="card-face card-front">
-              <span class="card-badge">03 / SYNESTHESIA</span>
-              <h3 class="card-title">Multimodal Tensor Fusion</h3>
-              <div class="card-metric">0.002s</div>
+              <span class="card-badge">Unified Manifold</span>
+              <h3 class="card-title">Native Multimodal Synapse</h3>
+              <div class="card-metric">0.001s</div>
             </div>
             <div class="card-face card-back">
-              <h3>Unified Latent Space</h3>
-              <p>Visual geometry, code abstractions, and symbolic mathematics mapped onto a continuous high-dimensional Riemannian manifold.</p>
+              <h3>Cross-Modal Coherence</h3>
+              <p>Thinks natively across code syntax, complex diagrams, high-resolution imagery, and formal symbols.</p>
               <div class="tag-list">
-                <span class="tag">Cross-Modal Embeddings</span>
-                <span class="tag">Direct Token Projections</span>
+                <span class="tag">Visual Reasoning</span>
+                <span class="tag">Code Synthesis</span>
               </div>
             </div>
           </div>
@@ -181,55 +180,54 @@
       <!-- Stage 4: Outro Singularity -->
       <div class="scrolly-stage">
         <div class="stage-singularity-content">
-          <span class="singularity-badge">COGNITIVE SINGULARITY</span>
-          <h2 class="singularity-title">A LIVING COGNITIVE ARCHITECTURE</h2>
+          <span class="singularity-badge">Uncompromising Clarity</span>
+          <h2 class="singularity-title">A new standard for intelligence.</h2>
         </div>
       </div>
 
     </section>
 
-    <!-- 04. THE INTERACTIVE THOUGHT CRUCIBLE (z-index: 35) -->
+    <!-- 04. THE APPLE DEVELOPER THINKING BENCH (z-index: 35) -->
     <section class="crucible-section" id="sectionCrucible">
-      <div class="section-header kinetic-reveal">
-        <span class="section-tag">Interactive Neural Lab</span>
-        <h2 class="section-title">THE THOUGHT CRUCIBLE</h2>
+      <div class="section-header">
+        <span class="section-tag">Interactive Bench</span>
+        <h2 class="section-title">Experience the Thinking Core.</h2>
         <p class="section-desc">
-          Test the Gemini 3.7 recursive reasoning engine against high-complexity paradoxes.
-          Watch real-time Tree-of-Thought DAG bifurcation, counterfactual branch pruning, and mathematical proof convergence.
+          Select a formal domain or input a custom premise to observe real-time causal verification,
+          branch expansion, and convergence.
         </p>
       </div>
 
-      <div class="crucible-workbench kinetic-reveal">
+      <div class="crucible-workbench">
         <div class="crucible-controls-bar">
           <div class="scenario-pills">
-            <button class="scenario-pill active" data-scenario="many-worlds">Grandfather Paradox (Many-Worlds)</button>
-            <button class="scenario-pill" data-scenario="p-vs-np">P vs NP (Natural Proofs Barrier)</button>
-            <button class="scenario-pill" data-scenario="consciousness">Consciousness (Strange Loops)</button>
+            <button class="scenario-pill active" data-scenario="formal-logic">Concurrent Memory Models</button>
+            <button class="scenario-pill" data-scenario="mathematical-proof">Prime Gap Bounds</button>
+            <button class="scenario-pill" data-scenario="system-synthesis">Decentralized Consensus</button>
           </div>
-          <button class="execute-reason-btn" id="btnExecuteReason">⚡ TRIGGER HYPER-REASONING</button>
+          <button class="execute-reason-btn" id="btnExecuteReason">Execute Thinking Pass</button>
         </div>
 
         <div class="crucible-grid">
-          <!-- Canvas Visualizer -->
+          <!-- Canvas Graph -->
           <div class="canvas-viewport-card">
             <canvas id="crucibleCanvas"></canvas>
-            <span class="canvas-hint">Click any node to inspect internal reasoning telemetry</span>
+            <span class="canvas-hint">Click any node to inspect verification telemetry</span>
           </div>
 
-          <!-- Sidebar Telemetry & Inspector -->
+          <!-- Sidebar Inspector -->
           <div class="crucible-sidebar">
             <div class="telemetry-card">
-              <div class="card-heading">LIVE TELEMETRY HUD</div>
+              <div class="card-heading">Live Telemetry</div>
               <div id="crucibleTelemetry">
-                <div class="telemetry-row"><span>GENERATED TOKENS:</span> <strong>1,420</strong></div>
-                <div class="telemetry-row"><span>REASONING DEPTH:</span> <strong>64 / 64</strong></div>
-                <div class="telemetry-row"><span>LATENT ENTROPY:</span> <strong>0.00012</strong></div>
-                <div class="telemetry-row"><span>STATUS:</span> <strong style="color: #00f0ff;">CONVERGED (Q.E.D.)</strong></div>
+                <div class="telemetry-row"><span>Tokens Generated</span> <strong>1,280</strong></div>
+                <div class="telemetry-row"><span>Reasoning Depth</span> <strong>64 / 64</strong></div>
+                <div class="telemetry-row"><span>Status</span> <strong style="color: #f5f5f7;">Verified (Q.E.D.)</strong></div>
               </div>
             </div>
 
             <div class="inspector-card">
-              <div class="card-heading">NODE THOUGHT INSPECTOR</div>
+              <div class="card-heading">Thought Inspector</div>
               <div id="crucibleInspector">
                 <!-- Populated dynamically -->
               </div>
@@ -239,60 +237,60 @@
 
         <!-- Custom Query Input -->
         <div class="custom-query-box">
-          <input type="text" class="custom-query-input" id="customQueryInput" placeholder="Enter custom hypothesis or philosophical paradox..." />
-          <button class="custom-query-btn" id="btnCustomQuery">Inject Axiom</button>
+          <input type="text" class="custom-query-input" id="customQueryInput" placeholder="Enter custom logical hypothesis or engineering challenge..." />
+          <button class="custom-query-btn" id="btnCustomQuery">Analyze</button>
         </div>
       </div>
     </section>
 
-    <!-- 05. SPECS & TELEMETRY SECTION (z-index: 40) -->
+    <!-- 05. TECHNICAL SPECIFICATIONS (z-index: 40) -->
     <section class="specs-section" id="sectionSpecs">
-      <div class="section-header kinetic-reveal">
-        <span class="section-tag">System Architecture</span>
-        <h2 class="section-title">PERFORMANCE TELEMETRY</h2>
-        <p class="section-desc">Zero heap-allocations in RAF loop, High-DPI DPR clamping, and hardware-accelerated GLSL computation.</p>
+      <div class="section-header">
+        <span class="section-tag">Specifications</span>
+        <h2 class="section-title">Engineered to Excel.</h2>
+        <p class="section-desc">PBR filmic rendering, zero-allocation RAF physics, and 120 FPS fluid interactions.</p>
       </div>
 
       <div class="spec-metrics-grid">
         <div class="spec-metric-card">
           <div class="spec-metric-val">64K</div>
-          <div class="spec-metric-label">Max Thought Depth</div>
-          <div class="spec-metric-sub">Recursive tree-of-thought DAG exploration with bounded entropy.</div>
+          <div class="spec-metric-label">Token Thinking Budget</div>
+          <div class="spec-metric-sub">Extended multi-hop reasoning with unbroken context coherence.</div>
         </div>
 
         <div class="spec-metric-card">
           <div class="spec-metric-val">120 FPS</div>
-          <div class="spec-metric-label">GPU Render Loop</div>
-          <div class="spec-metric-sub">Zero memory leaks with strict DPR resolution clamping (≤2.0).</div>
+          <div class="spec-metric-label">GPU Render Target</div>
+          <div class="spec-metric-sub">Clamped High-DPI DPR scaling with zero heap allocations in RAF loops.</div>
         </div>
 
         <div class="spec-metric-card">
-          <div class="spec-metric-val">0.0001</div>
-          <div class="spec-metric-label">Latent Free Energy</div>
-          <div class="spec-metric-sub">Variational inference convergence under multi-agent self-consistency.</div>
+          <div class="spec-metric-val">3.7×</div>
+          <div class="spec-metric-label">Verification Speedup</div>
+          <div class="spec-metric-sub">Accelerated Tree-of-Thought search across complex technical domains.</div>
         </div>
 
         <div class="spec-metric-card">
           <div class="spec-metric-val">100%</div>
-          <div class="spec-metric-label">Procedural Audio</div>
-          <div class="spec-metric-sub">Zero network audio assets; real-time Web Audio API frequency synthesis.</div>
+          <div class="spec-metric-label">Procedural Sound</div>
+          <div class="spec-metric-sub">Zero network audio assets; pure client-side Web Audio API synthesis.</div>
         </div>
       </div>
     </section>
 
-    <!-- 06. FOOTER EPILOGUE (z-index: 50) -->
+    <!-- 06. APPLE MINIMALIST FOOTER -->
     <footer class="site-footer">
       <div class="footer-credits">
-        <span>GEMINI 3.7 HIGH REASONING // CREATIVE WEB LAB</span>
+        <span>Gemini 3.7 Pro High Reasoning Architecture.</span>
       </div>
       <div class="footer-actions">
-        <button class="footer-btn" id="btnBackToTop">↑ Return to Void</button>
+        <button class="footer-btn" id="btnBackToTop">Back to Top ↑</button>
       </div>
     </footer>
 
   </main>
 
-  <!-- Application Entry Point -->
+  <!-- Script Entry Point -->
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

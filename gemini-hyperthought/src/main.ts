@@ -1,7 +1,7 @@
 /**
  * Main Application Orchestrator
- * Fuses Canvas 2D Sand Typography, Three.js 3D WebGL Reasoning Core,
- * GLSL Fluid Distortion, Lenis + GSAP Scrollytelling, Procedural Audio, and Thought Crucible.
+ * Apple Minimalist Architecture for Gemini 3.7 Pro High Reasoning
+ * Unifies Three.js Titanium Monolith, Canvas 2D Sand Typography, Lenis Smooth Scroll, and Thought Bench.
  */
 
 import './styles/main.css';
@@ -25,16 +25,16 @@ class HyperthoughtApp {
   }
 
   private async init(): Promise<void> {
-    // 1. Play Cinematic Shutter Reveal
+    // 1. Play Cinematic Apple Shutter Reveal
     await shutter.reveal();
 
-    // 2. Initialize 3D Reasoning Core
+    // 2. Initialize 3D Titanium Monolith Core
     const threeContainer = document.getElementById('threeCanvasContainer');
     if (threeContainer) {
       this.reasoningCore = new ReasoningCore3D(threeContainer);
     }
 
-    // 3. Initialize Fluid Distortion Canvas
+    // 3. Initialize Ambient Spotlight Canvas
     const fluidContainer = document.getElementById('fluidCanvasContainer');
     if (fluidContainer) {
       this.fluidCanvas = new FluidDistortionCanvas(fluidContainer);
@@ -46,16 +46,16 @@ class HyperthoughtApp {
       this.sandEngine = new SandTextEngine(sandCanvas);
     }
 
-    // 5. Initialize Motion & Scroll Orchestrator
+    // 5. Initialize Motion & Smooth Scroll Orchestrator
     this.scrollOrchestrator = new ScrollOrchestrator(this.reasoningCore || undefined);
 
-    // 6. Initialize Thought Crucible
+    // 6. Initialize Apple Developer Thinking Bench
     const crucibleCanvas = document.getElementById('crucibleCanvas') as HTMLCanvasElement;
     if (crucibleCanvas) {
       this.crucible = new ThoughtCrucible(crucibleCanvas);
     }
 
-    // 7. Bind UI Interactivity
+    // 7. Bind Clean UI Interactions
     this.bindUI();
   }
 
@@ -69,56 +69,46 @@ class HyperthoughtApp {
         const isNowActive = soundEngine.toggleMute();
         if (isNowActive) {
           audioBtn.classList.add('active');
-          audioStatusText.textContent = 'AUDIO: SYNTH ONLINE';
+          audioStatusText.textContent = 'Sound: On';
           soundEngine.playEurekaChord();
         } else {
           audioBtn.classList.remove('active');
-          audioStatusText.textContent = 'AUDIO: MUTED';
+          audioStatusText.textContent = 'Sound';
         }
       });
     }
 
-    // Sand Text Morph Selector Pills
-    const morphPills = document.querySelectorAll('.morph-pill-btn');
-    morphPills.forEach((pill) => {
-      pill.addEventListener('click', (e) => {
-        const target = e.currentTarget as HTMLElement;
-        const index = parseInt(target.dataset.index || '0', 10);
-        morphPills.forEach(p => p.classList.remove('active'));
-        target.classList.add('active');
-        if (this.sandEngine) {
-          this.sandEngine.setPhrase(index);
-        }
-      });
-    });
-
-    // Reasoning Budget Buttons (1X, 8X, 64X, 512X)
-    const budgetBtns = document.querySelectorAll('.budget-btn');
-    budgetBtns.forEach((btn) => {
+    // Reasoning Budget Segmented Buttons (Standard, 8X, 64X Pro, 512X Max)
+    const segmentedBtns = document.querySelectorAll('.segmented-btn');
+    segmentedBtns.forEach((btn) => {
       btn.addEventListener('click', (e) => {
         const target = e.currentTarget as HTMLElement;
         const budget = parseInt(target.dataset.budget || '64', 10);
-        budgetBtns.forEach(b => b.classList.remove('active'));
+        segmentedBtns.forEach(b => b.classList.remove('active'));
         target.classList.add('active');
 
         if (this.reasoningCore) {
           this.reasoningCore.setReasoningBudget(budget);
         }
-        soundEngine.playUiBlip(600 + Math.log2(budget) * 120);
+        soundEngine.playUiBlip();
       });
     });
 
     // Navigation Anchors
-    const navHero = document.getElementById('navHero');
-    const navStrata = document.getElementById('navStrata');
-    const navCrucible = document.getElementById('navCrucible');
+    const navOverview = document.getElementById('navOverview');
+    const navArchitecture = document.getElementById('navArchitecture');
+    const navBench = document.getElementById('navBench');
     const navSpecs = document.getElementById('navSpecs');
+    const btnExploreArch = document.getElementById('btnExploreArch');
+    const btnTryBench = document.getElementById('btnTryBench');
     const btnBackToTop = document.getElementById('btnBackToTop');
 
-    if (navHero) navHero.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionHero'));
-    if (navStrata) navStrata.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionStrata'));
-    if (navCrucible) navCrucible.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionCrucible'));
+    if (navOverview) navOverview.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionHero'));
+    if (navArchitecture) navArchitecture.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionStrata'));
+    if (navBench) navBench.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionCrucible'));
     if (navSpecs) navSpecs.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionSpecs'));
+    if (btnExploreArch) btnExploreArch.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionStrata'));
+    if (btnTryBench) btnTryBench.addEventListener('click', () => this.scrollOrchestrator?.scrollTo('#sectionCrucible'));
     if (btnBackToTop) btnBackToTop.addEventListener('click', () => this.scrollOrchestrator?.scrollTo(0));
 
     // Thought Crucible Scenarios
@@ -126,7 +116,7 @@ class HyperthoughtApp {
     scenarioPills.forEach(pill => {
       pill.addEventListener('click', (e) => {
         const target = e.currentTarget as HTMLElement;
-        const scenarioId = target.dataset.scenario || 'many-worlds';
+        const scenarioId = target.dataset.scenario || 'formal-logic';
         scenarioPills.forEach(p => p.classList.remove('active'));
         target.classList.add('active');
 
@@ -165,16 +155,16 @@ class HyperthoughtApp {
       });
     }
 
-    // Hover UI sounds
-    document.querySelectorAll('button, .nav-link, .morph-pill-btn, .split-card').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        soundEngine.playUiBlip(1200);
+    // Soft tactile click sounds on buttons
+    document.querySelectorAll('button, .nav-link, .segmented-btn, .scenario-pill').forEach(el => {
+      el.addEventListener('click', () => {
+        soundEngine.playUiBlip();
       });
     });
   }
 }
 
-// Boot application on DOM ready
+// Boot application
 document.addEventListener('DOMContentLoaded', () => {
   new HyperthoughtApp();
 });
