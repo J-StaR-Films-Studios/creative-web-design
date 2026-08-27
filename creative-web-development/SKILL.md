@@ -53,6 +53,45 @@ Match the experience goal to its specialized reference blueprint:
 
 ---
 
+---
+
+## Phase 0: Creative Direction, Anti-Trope Aesthetics & Bespoke Storyboarding (4 to 10+ Shots)
+
+Before scaffolding code, formulate the experience as a **bespoke sequence of 4 to 10+ cinematic shots** (scaled to project scope and user intent) where normalized scroll progress ($0\% \to 100\%$) drives a continuous virtual playhead ($t = 0.0s \to 10.0s+$).
+
+> [!IMPORTANT]
+> The table below is an **architectural template / exemplar structure**, NOT a rigid script. The agent must author a **100% custom narrative** specific to the user's topic (e.g. supersonic flight aerodynamics, luxury watch tourbillons, subterranean archaeology, or bio-molecular genetics).
+
+1. **Enforce Strict Anti-Trope Color Palettes**:
+   - **Banned Tropes**: Generic "AI purple / neon violet" glows, dark-mode obsidian clichés, and gradient-bordered glass cards.
+   - **Mandated Direction**: Ground the aesthetic in physical materials with 4–6 named hex tokens (e.g., Titanium Slate `#0F1113`, Chalk Bone `#EDE8DE`, Precision Safety Orange `#FF4800`, Matte Carbon `#0D0E10`, Terracotta `#C86432`, Raw Platinum `#E5E9EC`).
+2. **Author the Bespoke Multi-Shot Storyboard**:
+   - Choose the shot count based on scope: **Micro/Teaser Landing (4 shots)**, **Product Showcase (6–7 shots)**, **Editorial Scrollytelling (8–10+ shots)**.
+   - For every shot, define the 4 synchronized tracks:
+     1. **Camera Track** (Focal vector, dolly zoom, 3D tilt, or lateral tracking)
+     2. **Subject Action** (Resting, deconstructing, morphing, or assembling)
+     3. **Typography Track** (Mask reveals, SplitText staggers, or spatial drift)
+     4. **Interactive & Sound Trigger** (Cursor force fields, acoustic ticks, or harmonic sweeps)
+
+### Exemplar Storyboard Matrix (Adapt to Subject Matter):
+
+| Scroll Interval | Shot Role (Exemplar) | Camera / Focal Vector | Subject / Mechanism Action | Typography & Motion Track | Interactive & Sound Trigger |
+|---|---|---|---|---|---|
+| **$0\% - 15\%$** | **Shot 1: The Ambient Genesis** | Fixed wide view; subtle mouse parallax | Hero object in resting state with ambient float | Split-mask text reveal from counter-rotating masks | Sand/dust particle dispersion on hover; subtle tick |
+| **$15\% - 30\%$** | **Shot 2: The Macro Reveal** | Dolly zoom into internal geometry | Core surface unlatches; optical refraction shifts | Eyebrow caption staggers along normal vector | Cursor proximity magnetizes nearby components |
+| **$30\% - 45\%$** | **Shot 3: Spatial Deconstruction** | Macro 3D perspective tilt (`rotateX`, `translateZ`)| Mechanism explodes into layered functional strata | Pinned headline with line-by-line stagger | Scroll-pinned layer separation; mechanical click |
+| **$45\% - 60\%$** | **Shot 4: Physics & Force Field** | Top-down perpendicular scan | Particles/nodes react to real-time cursor velocity | Technical telemetry numbers scrub dynamically | Audio frequency sweep modulated by velocity |
+| **$60\% - 75\%$** | **Shot 5: Horizontal Spatial Track**| 90° lateral pan into horizontal track | Multi-module deep dive across spatial cards | Horizontal scrub with dynamic velocity skew | Card hover magnifiers & resonant chimes |
+| **$75\% - 85\%$** | **Shot 6: Diagnostic Analysis** | 3D wireframe / LIDAR cross-section | Surface toggles to holographic topology scan | Monospace readouts typewrite across view | Highpass acoustic blips |
+| **$85\% - 100\%$** | **Shot 7+: Climax & Resolution** | Center stage convergence; aperture wipe | All exploded components dock with elastic snap | Hero thesis statement re-converges | Aperture shutter flash; harmonic chord |
+
+### Completion Gate
+- [ ] Bespoke storyboard is authored for the specific topic (4 to 10+ shots) defining all 4 synchronized tracks.
+- [ ] Color palette uses material-grounded tokens with zero generic AI purple gradients.
+- [ ] Single signature interaction (e.g. sand dust typography or liquid distortion) is explicitly chosen.
+
+---
+
 ## Phase 1: Viewport Scaffolding, High-DPI Foundation & 3D Layer Stratification
 
 Establish the spatial layout, viewport coordinate containers, and High-DPI rendering baselines.
