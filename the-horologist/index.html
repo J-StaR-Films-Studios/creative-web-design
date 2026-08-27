@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHRONOS // The High-Precision Horological Laboratory</title>
+    
+    <!-- Google Fonts: Cinzel, Space Mono, Syne -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@500;700;800&display=swap" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <!-- Shutter Aperture Overlay -->
+    <div id="shutter-portal" class="shutter-portal">
+      <div class="shutter-blade blade-top"></div>
+      <div class="shutter-blade blade-bottom"></div>
+      <div class="shutter-indicator">
+        <span class="shutter-label">CALIBRATING TIMEBASE</span>
+        <span class="shutter-timecode" id="shutter-timecode">00:00:00:00</span>
+      </div>
+    </div>
+
+    <!-- Persistent Technical Telemetry HUD -->
+    <header class="hud-header">
+      <div class="hud-brand">
+        <span class="brand-monogram">CHRONOS</span>
+        <span class="brand-sub">LAB.SWISS // CAL.8800</span>
+      </div>
+      <div class="hud-center">
+        <span class="hud-pill" id="hud-mode-indicator">MODE: LIVE ESCAPEMENT</span>
+        <span class="hud-pill" id="hud-fps-counter">60.0 FPS</span>
+      </div>
+      <div class="hud-actions">
+        <button id="audio-toggle-btn" class="hud-btn" aria-label="Toggle Acoustic Escapement">
+          <span class="btn-indicator"></span>
+          <span class="btn-text">ACOUSTIC TICKS: OFF</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scroll Progress Line -->
+    <div class="scroll-progress-container">
+      <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Background WebGL Distortion Canvas -->
+    <canvas id="gl-background-canvas" class="gl-background-canvas"></canvas>
+
+    <!-- Master Scrollytelling Viewport -->
+    <main id="scroller-container" class="scroller-container">
+      
+      <!-- SHOT 1: THE STATIC HOROLOGICAL MANIFESTO (0.0s - 2.5s) -->
+      <section class="story-shot shot-hero" id="shot-1">
+        <div class="hero-grid-lines"></div>
+        
+        <div class="hero-content">
+          <div class="hero-eyebrow">
+            <span class="eyebrow-index">[01]</span>
+            <span class="eyebrow-text">THE ARCHITECTURE OF TEMPORAL FRICTION</span>
+          </div>
+
+          <!-- Canvas Sand Particle Interactive Typography -->
+          <div class="particle-text-wrapper" id="particle-text-container">
+            <canvas id="particle-text-canvas" class="particle-text-canvas"></canvas>
+            <div class="particle-hint">Hover / Drag cursor to disperse typographic gold dust</div>
+          </div>
+
+          <h2 class="hero-subheading">
+            A relentless convergence of micro-machined titanium, balance-wheel inertia, and quantum frequency regulation.
+          </h2>
+
+          <div class="hero-telemetry-row">
+            <div class="telemetry-item">
+              <span class="t-label">BALANCE FREQUENCY</span>
+              <span class="t-value" id="t-freq">28,800 VPH (4Hz)</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="t-label">ESCAPEMENT TORQUE</span>
+              <span class="t-value" id="t-torque">1.42 mN·m</span>
+            </div>
+            <div class="telemetry-item">
+              <span class="t-label">ISOCHRONISM DRIFT</span>
+              <span class="t-value" id="t-drift">&lt; 0.08 SEC / DAY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Central Kinetic Tourbillon Canvas -->
+        <div class="hero-tourbillon-viewport" id="tourbillon-viewport">
+          <canvas id="tourbillon-canvas" class="tourbillon-canvas"></canvas>
+        </div>
+      </section>
+
+      <!-- SHOT 2: THE EXPLODED MECHANISM ANATOMY (2.5s - 5.5s) -->
+      <section class="story-shot shot-exploded pinned-section" id="shot-2">
+        <div class="section-badge">
+          <span class="badge-num">[02]</span>
+          <span class="badge-title">SCHEMATIC DECONSTRUCTION</span>
+        </div>
+
+        <div class="exploded-stage" id="exploded-stage">
+          
+          <div class="exploded-layer layer-bezel" id="layer-bezel">
+            <div class="exploded-card">
+              <span class="card-tag">COMPONENT 01 / 04</span>
+              <h3>GRADE 5 TITANIUM BEZEL</h3>
+              <p>Machined from solid bar stock. Diamond-DLC coated with 24-facet laser calibration markings for zero optical parallax.</p>
+              <div class="spec-bar"><div class="spec-fill" style="width: 94%;"></div></div>
+            </div>
+          </div>
+
+          <div class="exploded-layer layer-crystal" id="layer-crystal">
+            <div class="exploded-card">
+              <span class="card-tag">COMPONENT 02 / 04</span>
+              <h3>DUAL-CURVED SAPPHIRE DOME</h3>
+              <p>9 Mohs hardness rating. 7-layer anti-reflective vapor deposition preventing chromatic dispersion under direct sunlight.</p>
+              <div class="spec-bar"><div class="spec-fill" style="width: 98%;"></div></div>
+            </div>
+          </div>
+
+          <div class="exploded-layer layer-movement" id="layer-movement">
+            <div class="exploded-card">
+              <span class="card-tag">COMPONENT 03 / 04</span>
+              <h3>CO-AXIAL TOURBILLON CAGE</h3>
+              <p>0.28 grams total mass. Flying titanium carriage rotating once every 60 seconds to counteract terrestrial gravitational bias.</p>
+              <div class="spec-bar"><div class="spec-fill" style="width: 100%;"></div></div>
+            </div>
+          </div>
+
+          <div class="exploded-layer layer-baseplate" id="layer-baseplate">
+            <div class="exploded-card">
+              <span class="card-tag">COMPONENT 04 / 04</span>
+              <h3>SKELETONIZED BASEPLATE</h3>
+              <p>Hand-beveled German silver (Maillechort) with Geneva stripes (Côtes de Genève) and perlage graining.</p>
+              <div class="spec-bar"><div class="spec-fill" style="width: 92%;"></div></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SHOT 3: THE HORIZONTAL GEAR TRAIN TRACK (5.5s - 8.5s) -->
+      <section class="story-shot shot-horizontal pinned-section" id="shot-3">
+        <div class="horizontal-header">
+          <span class="badge-num">[03]</span>
+          <h2>THE KINETIC GEAR SEQUENCE</h2>
+          <span class="horizontal-hint">SCROLL HORIZONTALLY THROUGH THE ESCAPEMENT</span>
+        </div>
+
+        <div class="horizontal-track" id="horizontal-track">
+          
+          <div class="track-panel panel-1">
+            <div class="panel-inner">
+              <div class="panel-num">MODULE A</div>
+              <h3>THE MAINSPRING BARREL</h3>
+              <p>Nivaflex alloy spring coil storing 72 hours of linear reserve torque delivered to the primary gear train.</p>
+              <div class="gear-graphic gear-1"></div>
+            </div>
+          </div>
+
+          <div class="track-panel panel-2">
+            <div class="panel-inner">
+              <div class="panel-num">MODULE B</div>
+              <h3>THE EPICYCLIC REDUCTION</h3>
+              <p>Micro-toothed beryllium bronze pinions stepping down 28,800 beats per hour into smooth continuous rotation.</p>
+              <div class="gear-graphic gear-2"></div>
+            </div>
+          </div>
+
+          <div class="track-panel panel-3">
+            <div class="panel-inner">
+              <div class="panel-num">MODULE C</div>
+              <h3>THE SILICON IMPULSE WHEEL</h3>
+              <p>Zero-lubrication monocrystalline silicon escapement providing diamond-hard shock resistance.</p>
+              <div class="gear-graphic gear-3"></div>
+            </div>
+          </div>
+
+          <div class="track-panel panel-4">
+            <div class="panel-inner">
+              <div class="panel-num">MODULE D</div>
+              <h3>THE VARIABLE-INERTIA BALANCE</h3>
+              <p>Four gold adjusting screws along the titanium rim enabling micro-regulation without index pins.</p>
+              <div class="gear-graphic gear-4"></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SHOT 4: THE RESOLUTION & COMMISIONING (8.5s - 10.0s) -->
+      <section class="story-shot shot-resolution" id="shot-4">
+        <div class="resolution-container">
+          <div class="res-badge">[04] // COMMISSIONING</div>
+          <h2 class="res-title">EXPERIENCE ABSOLUTE PRECISION</h2>
+          <p class="res-desc">
+            Each bespoke chronometer undergoes 45 consecutive days of observatory chronometric trials across 6 physical positions and 3 temperature variances.
+          </p>
+
+          <div class="cta-box">
+            <button class="acquire-btn" id="acquire-btn">
+              <span class="btn-glare"></span>
+              <span class="btn-text">INITIALIZE COMMISSION PROCESS</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <span class="cta-note">STRICTLY LIMITED TO 12 BESPOKE COMMISSIONS PER FISCAL CYCLE</span>
+          </div>
+        </div>
+
+        <footer class="site-footer">
+          <div class="footer-col">
+            <span class="f-title">MANUFACTORY</span>
+            <span>Vallée de Joux, Switzerland</span>
+          </div>
+          <div class="footer-col">
+            <span class="f-title">SPECIFICATION</span>
+            <span>ISO 3159 Certified Chronometer</span>
+          </div>
+          <div class="footer-col">
+            <span class="f-title">ENGINEERING</span>
+            <span>CHRONOS // LABS © 2026</span>
+          </div>
+        </footer>
+      </section>
+
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
