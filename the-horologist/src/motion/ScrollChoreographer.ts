@@ -19,7 +19,11 @@ export class ScrollChoreographer {
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
-      smoothWheel: true
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 2.0,
+      infinite: false
     });
 
     // Synchronize Lenis with GSAP ScrollTrigger
@@ -29,6 +33,10 @@ export class ScrollChoreographer {
       this.lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
+
+    document.fonts.ready.then(() => {
+      ScrollTrigger.refresh();
+    });
 
     this.initTimelineChoreography();
   }
