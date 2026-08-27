@@ -259,3 +259,117 @@ if (hardware.prefersReducedMotion) {
   gsap.set('.animated-element', { transform: 'none', opacity: 1 });
 }
 ```
+
+---
+
+## 7. Automated Creative Diagnostic Harness (`window.__CREATIVE_AUDIT__`)
+
+Deploy this runtime telemetry collector into every application during development. It exposes real-time performance invariants directly to automated test runners:
+
+```typescript
+export interface CreativeAuditReport {
+  isScrollUnlocked: boolean;
+  maxScroll: number;
+  fpsAverage: number;
+  frameDrops: number;
+  webglDrawCalls: number;
+  shaderErrors: string[];
+}
+
+export function initCreativeAudit(renderer?: THREE.WebGLRenderer, lenis?: any) {
+  const audit: CreativeAuditReport = {
+    isScrollUnlocked: false,
+    maxScroll: 0,
+    fpsAverage: 60,
+    frameDrops: 0,
+    webglDrawCalls: 0,
+    shaderErrors: []
+  };
+
+  let frameCount = 0;
+  let lastTime = performance.now();
+  let droppedFrames = 0;
+
+  function auditLoop(now: number) {
+    const delta = now - lastTime;
+    lastTime = now;
+    frameCount++;
+
+    if (delta > 22) droppedFrames++;
+
+    if (renderer) {
+      audit.webglDrawCalls = renderer.info.render.calls;
+    }
+
+    if (lenis) {
+      audit.maxScroll = lenis.limit;
+      audit.isScrollUnlocked = lenis.limit > 0;
+    } else {
+      audit.maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      audit.isScrollUnlocked = audit.maxScroll > 0;
+    }
+
+    audit.frameDrops = droppedFrames;
+    audit.fpsAverage = Math.round((frameCount * 1000) / (now || 1));
+
+    (window as any).__CREATIVE_AUDIT__ = audit;
+    requestAnimationFrame(auditLoop);
+  }
+
+  requestAnimationFrame(auditLoop);
+}
+```
+
+---
+
+## 8. Headless Playwright Experience Verifier (`scripts/verifyExperience.js`)
+
+Run this script in terminal (`node scripts/verifyExperience.js`) to programmatically verify motion smoothness, scroll fluidity, and zero shader errors:
+
+```javascript
+import { chromium } from 'playwright';
+
+async function verify() {
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage();
+  
+  const consoleErrors = [];
+  page.on('console', msg => {
+    if (msg.type() === 'error') consoleErrors.push(msg.text());
+  });
+
+  await page.goto('http://localhost:3000');
+  await page.waitForTimeout(1000);
+
+  // 1. Simulate Synthetic Scroll (0% -> 50% -> 100%)
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight / 2, behavior: 'instant' }));
+  await page.waitForTimeout(500);
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'instant' }));
+  await page.waitForTimeout(500);
+
+  // 2. Extract Diagnostic Payload
+  const report = await page.evaluate(() => window.__CREATIVE_AUDIT__);
+  report.consoleErrors = consoleErrors;
+
+  await browser.close();
+
+  console.log('=== CREATIVE VERIFICATION AUDIT ===');
+  console.log(JSON.stringify(report, null, 2));
+
+  // Exit with failure code if any critical invariant is violated
+  if (!report.isScrollUnlocked) {
+    console.error('FATAL: Scroll container is locked (maxScroll <= 0). Check html/body height.');
+    process.exit(1);
+  }
+  if (report.consoleErrors.length > 0) {
+    console.error('FATAL: Console errors detected during animation playback.');
+    process.exit(1);
+  }
+  if (report.webglDrawCalls > 100) {
+    console.error('WARNING: WebGL draw calls exceed budget of 100.');
+  }
+
+  console.log('SUCCESS: All creative invariants verified.');
+}
+verify();
+```

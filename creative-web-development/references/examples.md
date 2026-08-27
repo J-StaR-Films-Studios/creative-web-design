@@ -740,3 +740,70 @@ A complete, Promise-based page transition intercepting navigation and orchestrat
   });
 </script>
 ```
+
+---
+
+## Recipe 6: Procedural Web Audio Synthesizer (Escapement Ticks, Chimes & Scroll Audio)
+
+Synthesizes tactile acoustic feedback for micro-interactions without loading external MP3 files:
+
+```typescript
+export class ProceduralAudioEngine {
+  private ctx: AudioContext | null = null;
+  private isEnabled: boolean = false;
+
+  public toggle(): boolean {
+    if (!this.ctx) {
+      this.ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+    this.isEnabled = !this.isEnabled;
+    if (this.isEnabled) this.playHarmonicChime(520);
+    return this.isEnabled;
+  }
+
+  public playTick(frequency: number = 2400, decay: number = 0.02, gainVal: number = 0.12) {
+    if (!this.isEnabled || !this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    filter.type = 'highpass';
+    filter.frequency.value = 1800;
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(frequency, this.ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + decay);
+
+    gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + decay);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start();
+    osc.stop(this.ctx.currentTime + decay);
+  }
+
+  public playHarmonicChime(rootFreq: number = 520) {
+    if (!this.isEnabled || !this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(rootFreq, this.ctx.currentTime);
+
+    gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 1.2);
+
+    osc.connect(gain);
+    gain.connect(this.ctx.destination);
+
+    osc.start();
+    osc.stop(this.ctx.currentTime + 1.2);
+  }
+}
+```

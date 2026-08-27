@@ -26,6 +26,43 @@ To eliminate visual stutter, layout desynchronization, and conflicting render lo
              [Render DOM & 3D WebGL]
 ```
 
+
+### Canonical Lenis CSS Rules (Preventing Root Container Scroll-Locks)
+
+```css
+/* Critical Invariant: Decouple HTML & Body Heights */
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Enforce Lenis Smooth Scroll Engine Behavior */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+```
+
 ### Master Initialization Protocol
 
 ```javascript

@@ -1,6 +1,59 @@
-# Three.js & React Three Fiber (R3F) Architecture
+# Three.js, React Three Fiber (R3F) & 3D Asset Pipelines
 
-An authoritative engineering manual for constructing 3D browser viewports, importing DRACO-compressed GLTF assets, building responsive camera projection rigs, and synchronizing 3D scenes with page scroll.
+An authoritative operational manual for constructing high-performance 3D viewports, ingesting zero-auth CDN models, configuring studio lighting rigs, and synchronizing camera trajectories with virtual scroll playheads.
+
+---
+
+## 1. Instant 3D Model CDN Warehouse (Zero-Auth & CC0)
+
+When building experiences without local 3D assets, ingest these direct, production-grade `.glb` models hosted on public high-speed CDNs:
+
+| Model ID | Subject / Material Focus | Direct Raw CDN Endpoint | Recommended Scale & Bounding |
+|---|---|---|---|
+| **`DamagedHelmet`** | Sci-Fi Battered Helmet (PBR Metallics, Normal Maps, Emissive Glass) | `https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/DamagedHelmet/glTF-Binary/DamagedHelmet.glb` | Scale: `1.0`, Center: Auto `Box3` |
+| **`AntiqueCamera`** | Mechanical Vintage Camera (Brass, Glass Lens, Shutter Assembly) | `https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/AntiqueCamera/glTF-Binary/AntiqueCamera.glb` | Scale: `1.2`, Center: Auto `Box3` |
+| **`FlightHelmet`** | Aviation Helmet with Glass Visor & Leather PBR Textures | `https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/FlightHelmet/glTF/FlightHelmet.gltf` | Scale: `1.0`, Center: Auto `Box3` |
+| **`WaterBottle`** | Transparent Refractive Plastic & Textured Metal Cap | `https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/WaterBottle/glTF-Binary/WaterBottle.glb` | Scale: `2.5`, Center: Auto `Box3` |
+| **`CyberWatch`** | Luxury Titanium Chronometer & Link Bracelet (pmnd.rs) | `https://raw.githubusercontent.com/pmndrs/drei-assets/master/watch-v1.glb` | Scale: `0.8`, Center: Auto `Box3` |
+| **`MacBookPro`** | Aluminum Body, Screen Display Texture, Hinge Rig | `https://raw.githubusercontent.com/pmndrs/drei-assets/master/mac-draco.glb` | Scale: `1.0`, Center: Auto `Box3` |
+
+---
+
+## 2. Procedural 3D Mathematical Meshes (Zero-Asset Fallback)
+
+When network isolation or custom generative aesthetics prevent model downloads, construct procedural mathematical geometries:
+
+```typescript
+import * as THREE from 'three';
+
+// Refractive Procedural Icosahedron
+export function createRefractiveCore(): THREE.Mesh {
+  const geometry = new THREE.IcosahedronGeometry(1.5, 3);
+  const material = new THREE.MeshPhysicalMaterial({
+    roughness: 0.1,
+    transmission: 0.95, // Glass optical transmission
+    thickness: 1.2,
+    ior: 1.52, // Crown glass refractive index
+    color: new THREE.Color('#E5E9EC'),
+    wireframe: false
+  });
+  return new THREE.Mesh(geometry, material);
+}
+
+// Wireframe Topological Orbital Ring
+export function createTopologicalRing(): THREE.Mesh {
+  const geometry = new THREE.TorusGeometry(2.2, 0.4, 16, 100);
+  const material = new THREE.MeshStandardMaterial({
+    color: new THREE.Color('#FF4800'),
+    wireframe: true,
+    metalness: 0.8,
+    roughness: 0.2
+  });
+  return new THREE.Mesh(geometry, material);
+}
+```
+
+---
 
 ---
 

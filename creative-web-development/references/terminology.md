@@ -229,3 +229,17 @@ A precise glossary of architectural concepts, mathematical principles, visual co
 - **Definition**: Manually invoking `.dispose()` on all geometries, materials, textures, render targets, and WebGL contexts during component teardown to free GPU VRAM and prevent browser memory leaks.
 - **Operational Rule**: Recursively traverse scene graph calling `geometry.dispose()`, `material.dispose()`, `texture.dispose()`, and `renderer.forceContextLoss()`.
 - **_Avoid_**: *Relying on JavaScript garbage collector to free GPU memory, orphaned WebGL contexts, unhandled unmounts.*
+
+---
+
+## 8. Cinematics & Storyboarding Invariants
+
+| Preferred Operational Term | Applied Engineering Context | Strict Anti-Synonyms (_Avoid_) |
+|---|---|---|
+| **Virtual Playhead** | Master continuous normalized timebase ($t \in [0.0, 1.0]$) driving all DOM, Canvas, WebGL, and Audio states | _Timeline cursor, scroll position, page offset_ |
+| **Shot Sequence** | A discrete, pinned or free-flowing thematic scene ($0.0s - 10.0s$) with synchronized camera, subject, typography, and sound | _Page section, content div, block_ |
+| **Focal Track** | The primary visual entity (3D model, particle canvas, or headline) commanding user gaze per shot | _Main thing, center image, hero graphic_ |
+| **Aperture Shutter** | Physical camera blade transition overlay masking scene switches or loading sequences | _Loading spinner, curtain transition, modal veil_ |
+| **Material Grounding** | Sourcing color palettes from real physical textures (Titanium Slate `#0F1113`, Chalk Bone `#EDE8DE`, Safety Orange `#FF4800`) | _AI purple, neon glow, cyberpunk gradient_ |
+| **Acoustic Escapement** | Synthesizing short, highpass-filtered alternating triangle clicks simulating mechanical balance wheels | _Sound effect, audio file playback, beep_ |
+| **`__CREATIVE_AUDIT__`** | Global runtime diagnostic payload tracking scroll lock status, FPS stability, draw calls, and GL errors | _Debug log, console info, test output_ |
