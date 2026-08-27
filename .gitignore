@@ -1,0 +1,4 @@
+*.pdf
+mycin_pdfs/
+.DS_Store
+Thumbs.db
