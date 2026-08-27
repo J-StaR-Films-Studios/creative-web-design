@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Syne', sans-serif;
+  --font-mono-tech: 'JetBrains Mono', monospace;
+  --font-editorial: 'Cinzel', serif;
+  --font-sans-body: 'Space Grotesk', sans-serif;
+
+  --color-void-black: #060709;
+  --color-void-dark: #0b0d12;
+  --color-void-card: #12141a;
+  --color-void-bone: #ede8de;
+  --color-void-ash: #8e929a;
+  --color-void-slate: #242834;
+  --color-void-vermillion: #ff3b00;
+}
+
+:root {
+  --void-black: #060709;
+  --void-dark: #0b0d12;
+  --void-card: #12141a;
+  --void-bone: #ede8de;
+  --void-ash: #8e929a;
+  --void-slate: #242834;
+  --void-vermillion: #ff3b00;
+}
+
+html {
+  min-height: 100%;
+  background-color: #060709;
+  color: #ede8de;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+  background-color: #060709;
+  color: #ede8de;
+  margin: 0;
+  padding: 0;
+}
+
+/* Canonical Lenis CSS Rules (Preventing Root Container Scroll-Locks) */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Custom Typography Utilities */
+.font-display {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-mono-tech {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.font-editorial {
+  font-family: 'Cinzel', serif;
+}
+
+.font-sans-body {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #060709;
+}
+::-webkit-scrollbar-thumb {
+  background: #242834;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff3b00;
+}
+
+/* Hide default cursor on desktop when fine pointer is active */
+@media (pointer: fine) {
+  body, a, button, input, textarea, [role="button"] {
+    cursor: none !important;
+  }
+}
