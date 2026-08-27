@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>GEMINI 3.7 // ARCHITECTURE OF HYPERTHOUGHT</title>
+  <meta name="description" content="An interactive GPU-accelerated journey through the latent hyperspace of Gemini 3.7 High Reasoning." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body>
+
+  <!-- Semantic Dual-DOM Accessibility Anchor -->
+  <h1 class="sr-only">Gemini 3.7: Architecture of Hyperthought — Interactive High Reasoning Metaspace</h1>
+
+  <!-- 00. Cinematic Shutter Transition Curtain (z-index: 99999) -->
+  <div class="transition-container" aria-hidden="true">
+    <div class="shutter-row row-top">
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+    </div>
+    <div class="shutter-row row-bottom">
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+      <div class="shutter-block"></div>
+    </div>
+  </div>
+
+  <!-- 01. Site Header & Telemetry HUD (z-index: 100) -->
+  <header class="site-header">
+    <div class="brand-mark">
+      <span class="brand-logo-pill">3.7</span>
+      <span class="brand-title">GEMINI // HYPERTHOUGHT</span>
+    </div>
+    <div class="header-controls">
+      <button class="nav-link" id="navHero">Void</button>
+      <button class="nav-link" id="navStrata">Strata</button>
+      <button class="nav-link" id="navCrucible">Crucible</button>
+      <button class="nav-link" id="navSpecs">Specs</button>
+      <button class="audio-toggle-btn" id="audioToggleBtn" title="Toggle Procedural Web Audio Engine">
+        <span class="audio-pulse-indicator"></span>
+        <span id="audioStatusText">AUDIO: MUTED</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 02. Background WebGL Canvas Containers (z-index: 1 & 10) -->
+  <div id="fluidCanvasContainer" aria-hidden="true"></div>
+  <div id="threeCanvasContainer" aria-hidden="true"></div>
+
+  <!-- 03. Fixed Reasoning Budget HUD Panel (z-index: 90) -->
+  <div class="budget-hud-panel" id="budgetHud">
+    <span class="budget-label">REASONING BUDGET:</span>
+    <div class="budget-buttons">
+      <button class="budget-btn" data-budget="1">1X</button>
+      <button class="budget-btn" data-budget="8">8X</button>
+      <button class="budget-btn active" data-budget="64">64X</button>
+      <button class="budget-btn" data-budget="512">512X MAX</button>
+    </div>
+  </div>
+
+  <!-- Main Scrollable Flow -->
+  <main id="smoothScrollWrapper">
+
+    <!-- HERO SECTION: Sand Typography Decomposition (z-index: 20) -->
+    <section class="hero-section" id="sectionHero">
+      <canvas id="sandTextCanvas"></canvas>
+
+      <div class="hero-overlay-ui">
+        <div class="hero-top-meta">
+          <div class="meta-pill">HYPER-REASONING ENGINE ONLINE</div>
+          <div class="meta-pill">RECURSIVE LATENT DEPTH: 64 LAYERS</div>
+        </div>
+
+        <div class="hero-bottom-controls">
+          <div class="text-morph-selector">
+            <button class="morph-pill-btn active" data-index="0">GEMINI 3.7</button>
+            <button class="morph-pill-btn" data-index="1">HIGH REASONING</button>
+            <button class="morph-pill-btn" data-index="2">THOUGHT SYNTHESIS</button>
+            <button class="morph-pill-btn" data-index="3">RECURSIVE LATENT</button>
+          </div>
+
+          <div class="scroll-indicator">
+            <div class="mouse-icon"></div>
+            <span>Scroll to Traverse</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PINNED SCROLLYTELLING TRACK: 400% Viewport (z-index: 30) -->
+    <section class="scrolly-pinned-container" id="sectionStrata">
+
+      <!-- Stage 1: Headline Exit & Transition -->
+      <div class="scrolly-stage">
+        <div class="stage-hero-content">
+          <div class="hero-sub-eyebrow">COGNITIVE MANIFOLD</div>
+          <h2 class="hero-main-heading">BEYOND SIMPLE<br />NEXT-TOKEN PREDICTION</h2>
+        </div>
+      </div>
+
+      <!-- Stage 2: Circular Mask Expansion -->
+      <div class="circular-theme-mask">
+        <div class="stage-strata-title">
+          <span class="strata-number">STRATA // 02</span>
+          <h2 class="strata-heading">RECURSIVE SELF-CORRECTION</h2>
+          <p class="strata-desc">
+            Continuous internal verification passes branch through tree-of-thought DAGs,
+            pruning hallucinated paths before reaching the output projection layer.
+          </p>
+        </div>
+      </div>
+
+      <!-- Stage 3: Split-Card 3D Spatial Flip Deck -->
+      <div class="scrolly-stage">
+        <div class="cards-wrapper">
+
+          <!-- Card 1 -->
+          <div class="split-card" id="card-1">
+            <div class="card-face card-front">
+              <span class="card-badge">01 / ARCHITECTURE</span>
+              <h3 class="card-title">Multi-Vector Attention Waves</h3>
+              <div class="card-metric">128M</div>
+            </div>
+            <div class="card-face card-back">
+              <h3>Sparse Hyper-Tensors</h3>
+              <p>Dynamic cross-layer routing isolates high-entropy tokens and allocates exponential compute where logical friction is maximal.</p>
+              <div class="tag-list">
+                <span class="tag">Mixture-of-Depth</span>
+                <span class="tag">Flash-Attention 4</span>
+                <span class="tag">KV Cache Pruning</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="split-card" id="card-2">
+            <div class="card-face card-front">
+              <span class="card-badge">02 / REASONING</span>
+              <h3 class="card-title">Tree-of-Thought Search DAG</h3>
+              <div class="card-metric">512X</div>
+            </div>
+            <div class="card-face card-back">
+              <h3>Counterfactual Proofs</h3>
+              <p>Explores parallel solution branches via Monte Carlo rollouts, validating intermediate axioms before terminal convergence.</p>
+              <div class="tag-list">
+                <span class="tag">SMT Verification</span>
+                <span class="tag">Backtracking</span>
+                <span class="tag">Dual Heuristics</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="split-card" id="card-3">
+            <div class="card-face card-front">
+              <span class="card-badge">03 / SYNESTHESIA</span>
+              <h3 class="card-title">Multimodal Tensor Fusion</h3>
+              <div class="card-metric">0.002s</div>
+            </div>
+            <div class="card-face card-back">
+              <h3>Unified Latent Space</h3>
+              <p>Visual geometry, code abstractions, and symbolic mathematics mapped onto a continuous high-dimensional Riemannian manifold.</p>
+              <div class="tag-list">
+                <span class="tag">Cross-Modal Embeddings</span>
+                <span class="tag">Direct Token Projections</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Stage 4: Outro Singularity -->
+      <div class="scrolly-stage">
+        <div class="stage-singularity-content">
+          <span class="singularity-badge">COGNITIVE SINGULARITY</span>
+          <h2 class="singularity-title">A LIVING COGNITIVE ARCHITECTURE</h2>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 04. THE INTERACTIVE THOUGHT CRUCIBLE (z-index: 35) -->
+    <section class="crucible-section" id="sectionCrucible">
+      <div class="section-header kinetic-reveal">
+        <span class="section-tag">Interactive Neural Lab</span>
+        <h2 class="section-title">THE THOUGHT CRUCIBLE</h2>
+        <p class="section-desc">
+          Test the Gemini 3.7 recursive reasoning engine against high-complexity paradoxes.
+          Watch real-time Tree-of-Thought DAG bifurcation, counterfactual branch pruning, and mathematical proof convergence.
+        </p>
+      </div>
+
+      <div class="crucible-workbench kinetic-reveal">
+        <div class="crucible-controls-bar">
+          <div class="scenario-pills">
+            <button class="scenario-pill active" data-scenario="many-worlds">Grandfather Paradox (Many-Worlds)</button>
+            <button class="scenario-pill" data-scenario="p-vs-np">P vs NP (Natural Proofs Barrier)</button>
+            <button class="scenario-pill" data-scenario="consciousness">Consciousness (Strange Loops)</button>
+          </div>
+          <button class="execute-reason-btn" id="btnExecuteReason">⚡ TRIGGER HYPER-REASONING</button>
+        </div>
+
+        <div class="crucible-grid">
+          <!-- Canvas Visualizer -->
+          <div class="canvas-viewport-card">
+            <canvas id="crucibleCanvas"></canvas>
+            <span class="canvas-hint">Click any node to inspect internal reasoning telemetry</span>
+          </div>
+
+          <!-- Sidebar Telemetry & Inspector -->
+          <div class="crucible-sidebar">
+            <div class="telemetry-card">
+              <div class="card-heading">LIVE TELEMETRY HUD</div>
+              <div id="crucibleTelemetry">
+                <div class="telemetry-row"><span>GENERATED TOKENS:</span> <strong>1,420</strong></div>
+                <div class="telemetry-row"><span>REASONING DEPTH:</span> <strong>64 / 64</strong></div>
+                <div class="telemetry-row"><span>LATENT ENTROPY:</span> <strong>0.00012</strong></div>
+                <div class="telemetry-row"><span>STATUS:</span> <strong style="color: #00f0ff;">CONVERGED (Q.E.D.)</strong></div>
+              </div>
+            </div>
+
+            <div class="inspector-card">
+              <div class="card-heading">NODE THOUGHT INSPECTOR</div>
+              <div id="crucibleInspector">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Query Input -->
+        <div class="custom-query-box">
+          <input type="text" class="custom-query-input" id="customQueryInput" placeholder="Enter custom hypothesis or philosophical paradox..." />
+          <button class="custom-query-btn" id="btnCustomQuery">Inject Axiom</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05. SPECS & TELEMETRY SECTION (z-index: 40) -->
+    <section class="specs-section" id="sectionSpecs">
+      <div class="section-header kinetic-reveal">
+        <span class="section-tag">System Architecture</span>
+        <h2 class="section-title">PERFORMANCE TELEMETRY</h2>
+        <p class="section-desc">Zero heap-allocations in RAF loop, High-DPI DPR clamping, and hardware-accelerated GLSL computation.</p>
+      </div>
+
+      <div class="spec-metrics-grid">
+        <div class="spec-metric-card">
+          <div class="spec-metric-val">64K</div>
+          <div class="spec-metric-label">Max Thought Depth</div>
+          <div class="spec-metric-sub">Recursive tree-of-thought DAG exploration with bounded entropy.</div>
+        </div>
+
+        <div class="spec-metric-card">
+          <div class="spec-metric-val">120 FPS</div>
+          <div class="spec-metric-label">GPU Render Loop</div>
+          <div class="spec-metric-sub">Zero memory leaks with strict DPR resolution clamping (≤2.0).</div>
+        </div>
+
+        <div class="spec-metric-card">
+          <div class="spec-metric-val">0.0001</div>
+          <div class="spec-metric-label">Latent Free Energy</div>
+          <div class="spec-metric-sub">Variational inference convergence under multi-agent self-consistency.</div>
+        </div>
+
+        <div class="spec-metric-card">
+          <div class="spec-metric-val">100%</div>
+          <div class="spec-metric-label">Procedural Audio</div>
+          <div class="spec-metric-sub">Zero network audio assets; real-time Web Audio API frequency synthesis.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06. FOOTER EPILOGUE (z-index: 50) -->
+    <footer class="site-footer">
+      <div class="footer-credits">
+        <span>GEMINI 3.7 HIGH REASONING // CREATIVE WEB LAB</span>
+      </div>
+      <div class="footer-actions">
+        <button class="footer-btn" id="btnBackToTop">↑ Return to Void</button>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Application Entry Point -->
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

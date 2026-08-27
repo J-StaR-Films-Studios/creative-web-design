@@ -1,4 +1,24 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Production builds
+dist/
+build/
+.next/
+out/
+
+# Environment and local configs
+.env
+.env.local
+.env.*.local
+
+# Large binary PDFs
 *.pdf
 mycin_pdfs/
+
+# System and logs
 .DS_Store
 Thumbs.db
+*.log
+.cache/
