@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TERRA ARCHIVE — Subterranean LIDAR & Cartographic Journey</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,800;0,900;1,400;1,600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- Dual-DOM Screen Reader Accessible Intact Hierarchy -->
+    <div class="sr-only" role="region" aria-label="Documentary Scrollytelling Experience">
+      <h1>TERRA ARCHIVE: Subterranean LIDAR & Cartographic Journey</h1>
+      <p>An interactive subterranean cartography and archaeological discovery experience descending from the Earth's topographic crust down to Archaean bedrock codex chambers.</p>
+    </div>
+
+    <!-- Main Application Scaffolding -->
+    <div id="app" class="app-root">
+      <!-- Fixed Global Canvas Layers -->
+      <div id="contour-container" class="fixed-canvas-layer"></div>
+      <div id="sand-container" class="fixed-canvas-layer interactive-layer"></div>
+      <div id="loupe-container" class="fixed-canvas-layer pointer-events-none"></div>
+
+      <!-- Scrollytelling Pin Track Container -->
+      <main class="scrolly-container">
+        <!-- Shot 1: The Topographic Surface (0% - 25%) -->
+        <section id="shot-1" class="scrolly-section shot-topography" aria-label="Shot 1: Topographic Surface">
+          <div class="shot-content-wrapper">
+            <div class="topography-hero-content">
+              <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span class="badge-text">EXPEDITION LOG // ARCHAEAN BASIN</span>
+              </div>
+              <h1 class="hero-title">
+                <span class="title-line">TERRA</span>
+                <span class="title-line highlight">ARCHIVE</span>
+              </h1>
+              <p class="hero-description">
+                Subterranean LIDAR reconnaissance and geodetic cartography. Descending through three billion years of subterranean strata to decode humanity's prime planetary ciphers.
+              </p>
+              <div class="hero-scroll-indicator">
+                <span class="scroll-arrow">↓</span>
+                <span class="scroll-text">SCROLL TO COMMENCE DESCENT</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Shot 2: Stratigraphic Breakdown (25% - 55%) -->
+        <section id="shot-2" class="scrolly-section shot-stratigraphy" aria-label="Shot 2: Stratigraphic Breakdown">
+          <div class="shot-content-wrapper">
+            <div class="stratigraphy-intro">
+              <span class="section-tag">SHOT 02 // 3D STRATIGRAPHIC SPLIT</span>
+              <div class="section-header-placeholder">
+                <!-- Sand typography animates here in canvas -->
+              </div>
+            </div>
+            <div id="strata-3d-anchor" class="strata-anchor"></div>
+          </div>
+        </section>
+
+        <!-- Shot 3: The Archaeological Specimen (55% - 85%) -->
+        <section id="shot-3" class="scrolly-section shot-specimens" aria-label="Shot 3: Archaeological Specimens">
+          <div id="specimen-gallery-anchor" class="specimen-anchor"></div>
+        </section>
+
+        <!-- Shot 4: The Codex Reconstruction (85% - 100%) -->
+        <section id="shot-4" class="scrolly-section shot-codex" aria-label="Shot 4: Codex Reconstruction">
+          <div class="shot-content-wrapper codex-wrapper">
+            <div class="codex-intro">
+              <span class="section-tag">SHOT 04 // FINAL CODEX SYNTHESIS</span>
+            </div>
+            <div class="codex-statement-area">
+              <!-- Re-converged sand particles render the thesis in canvas -->
+            </div>
+            <div class="codex-footer-meta">
+              <div class="meta-col">
+                <span class="col-label">PRIMARY RECEPTACLE</span>
+                <span class="col-val">ARCHAEAN CRATON // BEDROCK -3,410m</span>
+              </div>
+              <div class="meta-col">
+                <span class="col-label">LIDAR CONFIDENCE</span>
+                <span class="col-val">99.98% VOLUMETRIC PARITY</span>
+              </div>
+              <div class="meta-col">
+                <span class="col-label">ARCHIVE PROTOCOL</span>
+                <span class="col-val">OPEN GEODETIC CODEX // PRESERVED</span>
+              </div>
+            </div>
+            <div class="codex-replay-action">
+              <button id="btn-replay" class="replay-btn">
+                <span>RE-INITIALIZE EXPEDITION</span>
+                <span class="btn-arrow">↑</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Global HUD Overlay -->
+      <div id="hud-container"></div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
