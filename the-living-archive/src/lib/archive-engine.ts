@@ -99,8 +99,8 @@ export class ArchiveEngine {
     const mainKeyLight = new THREE.DirectionalLight(0xfff7ec, 1.8);
     mainKeyLight.position.set(20, 35, 20);
     mainKeyLight.castShadow = true;
-    mainKeyLight.shadow.mapSize.width = 2048;
-    mainKeyLight.shadow.mapSize.height = 2048;
+    mainKeyLight.shadow.mapSize.width = 1024;
+    mainKeyLight.shadow.mapSize.height = 1024;
     mainKeyLight.shadow.bias = -0.0001;
     this.scene.add(mainKeyLight);
 
@@ -108,12 +108,12 @@ export class ArchiveEngine {
     fillLight.position.set(-20, 20, -60);
     this.scene.add(fillLight);
 
-    // Gallery Ceiling Downlights along the Spine
+    // Gallery Ceiling Downlights along the Spine (Optimized: No shadow passes to preserve 60 FPS)
     const roomPositionsZ = [-30, -80, -130, -180, -230, -280];
     roomPositionsZ.forEach((z) => {
       const downlight = new THREE.PointLight(0xffeedd, 1.2, 45, 1.3);
       downlight.position.set(0, 12, z);
-      downlight.castShadow = true;
+      downlight.castShadow = false;
       this.scene.add(downlight);
 
       // Visual luminaire fixture
@@ -734,11 +734,22 @@ export class ArchiveEngine {
   /*                      INTERACTION & EVENT HANDLING                          */
   /* -------------------------------------------------------------------------- */
 
+  private lastMouseClient: { x: number; y: number } = { x: 0, y: 0 };
+  private mouseMoved: boolean = false;
+  private frameCount: number = 0;
+
   private onMouseMove = (event: MouseEvent) => {
     this.mouseTarget.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouseTarget.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    this.lastMouseClient.x = event.clientX;
+    this.lastMouseClient.y = event.clientY;
+    this.mouseMoved = true;
+  };
 
-    // Raycast for interactive artifacts
+  private performRaycast() {
+    if (!this.mouseMoved) return;
+    this.mouseMoved = false;
+
     this.raycaster.setFromCamera(this.mouseTarget, this.camera);
     const intersects = this.raycaster.intersectObjects(this.interactiveObjects, true);
 
@@ -754,16 +765,16 @@ export class ArchiveEngine {
           this.hoveredObject = target;
           globalAudio.playTick(3200, 0.015, 0.05);
         }
-        this.onHoverCallback?.(artifact, { x: event.clientX, y: event.clientY });
+        this.onHoverCallback?.(artifact, this.lastMouseClient);
         return;
       }
     }
 
     if (this.hoveredObject) {
       this.hoveredObject = null;
-      this.onHoverCallback?.(null, { x: event.clientX, y: event.clientY });
+      this.onHoverCallback?.(null, this.lastMouseClient);
     }
-  };
+  }
 
   private onClick = () => {
     if (this.isFrozen) return;
@@ -887,6 +898,12 @@ export class ArchiveEngine {
         obj.rotation.x = init.rot.x + (Math.random() - 0.5) * 0.08 * this.destructionProgress;
         obj.rotation.z = init.rot.z + (Math.random() - 0.5) * 0.08 * this.destructionProgress;
       });
+    }
+
+    // Raycasting throttled to RAF every 2 frames
+    this.frameCount++;
+    if (this.frameCount % 2 === 0 && !this.isFrozen) {
+      this.performRaycast();
     }
 
     // Render Scene via Post-processing

@@ -14,6 +14,7 @@ export function OpeningSequence({ isLoaded, onEnter, objectCount }: OpeningSeque
   const titleContainerRef = useRef<HTMLHeadingElement>(null);
   const enterBtnRef = useRef<HTMLButtonElement>(null);
   const [showEnterPrompt, setShowEnterPrompt] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(25);
   const [isExiting, setIsExiting] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
 
@@ -21,12 +22,32 @@ export function OpeningSequence({ isLoaded, onEnter, objectCount }: OpeningSeque
   const mouse = useRef({ x: 0, y: 0, targetX: 0, targetY: 0, vx: 0, vy: 0 });
   const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
 
+  // Smooth simulated pre-flight loading progress
+  useEffect(() => {
+    if (isLoaded) {
+      setLoadProgress(100);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setLoadProgress((prev) => {
+        if (prev >= 94) {
+          clearInterval(interval);
+          return 94;
+        }
+        return prev + Math.floor(Math.random() * 12 + 6);
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [isLoaded]);
+
   // Show "ENTER THE ARCHIVE" prompt after brief indexing delay
   useEffect(() => {
     if (!isLoaded) return;
     const timer = setTimeout(() => {
       setShowEnterPrompt(true);
-    }, 2400);
+    }, 400);
 
     return () => clearTimeout(timer);
   }, [isLoaded]);
@@ -166,7 +187,8 @@ export function OpeningSequence({ isLoaded, onEnter, objectCount }: OpeningSeque
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0b] select-none pointer-events-auto"
+      onClick={triggerEntrance}
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0b] select-none pointer-events-auto cursor-pointer"
       style={{ perspective: '1200px' }}
     >
       {/* Editorial Accession Stamp */}
@@ -212,26 +234,41 @@ export function OpeningSequence({ isLoaded, onEnter, objectCount }: OpeningSeque
         {objectCount} OBJECTS INDEXED
       </p>
 
-      {/* Door Passage Interaction */}
-      <div className="h-16 mt-8 flex items-center justify-center">
-        {showEnterPrompt && (
+      {/* Pre-flight Loading Bar & Enter Button */}
+      <div className="min-h-[72px] mt-6 flex flex-col items-center justify-center">
+        {!isLoaded && loadProgress < 100 ? (
+          <div className="flex flex-col items-center gap-2.5">
+            <div className="w-56 md:w-64 h-[2px] bg-[#222630] relative overflow-hidden rounded-full">
+              <div
+                className="absolute top-0 left-0 h-full bg-[#C86432] transition-all duration-200"
+                style={{ width: `${loadProgress}%` }}
+              />
+            </div>
+            <span className="font-mono text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-[#8890A0]">
+              LOADING 3D ARCHIVE [{loadProgress}%]
+            </span>
+          </div>
+        ) : (
           <button
             ref={enterBtnRef}
-            onClick={triggerEntrance}
-            className="group relative px-8 py-3.5 border border-[#333740] hover:border-[#c86432] text-[#e5e9ec] hover:text-[#c86432] text-xs font-mono tracking-[0.35em] uppercase transition-all duration-300 backdrop-blur-sm cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              triggerEntrance();
+            }}
+            className="group relative px-8 py-3.5 border border-[#333740] hover:border-[#c86432] text-[#e5e9ec] hover:text-[#c86432] text-xs font-mono tracking-[0.35em] uppercase transition-all duration-300 backdrop-blur-sm cursor-pointer shadow-lg"
           >
             <span className="relative z-10 flex items-center gap-3">
-              <span>ENTER THE ARCHIVE</span>
-              <span className="w-1.5 h-1.5 bg-[#c86432] rounded-full animate-ping" />
+              <span>ENTER THE ARCHIVE ↗</span>
+              <span className="w-2 h-2 bg-[#c86432] rounded-full animate-ping" />
             </span>
-            <div className="absolute inset-0 bg-[#c86432]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-[#c86432]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </button>
         )}
       </div>
 
       {/* Bottom Telemetry */}
-      <div className="absolute bottom-8 text-[10px] tracking-[0.4em] text-[#555a64] uppercase font-mono">
-        PRESS ENTER OR CLICK TO PENETRATE THE ARCHIVE
+      <div className="absolute bottom-6 md:bottom-8 text-[9px] md:text-[10px] tracking-[0.4em] text-[#555a64] uppercase font-mono text-center">
+        {isLoaded ? 'PRESS ENTER OR CLICK ANYWHERE TO ENTER' : 'COMPILING WEBGL SHADER MATRICES...'}
       </div>
     </div>
   );

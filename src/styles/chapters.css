@@ -537,9 +537,13 @@
     position: sticky;
     top: 48px;
     z-index: 50;
-    background: rgba(10, 11, 13, 0.98);
-    backdrop-filter: blur(16px);
-    padding-bottom: 12px;
+    margin-left: calc(-1 * var(--gutter-width));
+    margin-right: calc(-1 * var(--gutter-width));
+    width: calc(100% + (2 * var(--gutter-width)));
+    padding: 8px var(--gutter-width) 14px;
+    background: #0A0B0D;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.95);
+    box-sizing: border-box;
     align-self: auto;
   }
 }
@@ -1429,6 +1433,10 @@
 
   .probe-card {
     padding: 16px;
+  }
+
+  .probe-card:hover, .probe-card.active {
+    transform: none;
   }
 
   .probe-name {

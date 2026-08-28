@@ -95,7 +95,7 @@ export class ArchiveParticleEngine {
 
       const imgData = offCtx.getImageData(0, 0, this.width, this.height);
       const data = imgData.data;
-      const stride = this.width <= 768 ? 8 : 5;
+      const stride = this.width <= 768 ? 10 : 7;
 
       for (let y = 0; y < this.height; y += stride) {
         for (let x = 0; x < this.width; x += stride) {
@@ -107,7 +107,7 @@ export class ArchiveParticleEngine {
       }
     } else if (shape === 'CIRCLE') {
       const radius = Math.min(this.width, this.height) * 0.28;
-      const count = 900;
+      const count = 450;
       for (let i = 0; i < count; i++) {
         const angle = (i / count) * Math.PI * 2;
         const r = radius * Math.sqrt(Math.random());
@@ -118,8 +118,8 @@ export class ArchiveParticleEngine {
         });
       }
     } else if (shape === 'MATRIX') {
-      const cols = 40;
-      const rows = 25;
+      const cols = 28;
+      const rows = 18;
       const stepX = this.width / cols;
       const stepY = this.height / rows;
       for (let c = 1; c < cols; c++) {
@@ -133,7 +133,7 @@ export class ArchiveParticleEngine {
       }
     } else {
       // Dispersed random constellation
-      const count = 800;
+      const count = 400;
       for (let i = 0; i < count; i++) {
         points.push({
           x: Math.random() * this.width,
@@ -252,12 +252,10 @@ export class ArchiveParticleEngine {
       p.x += p.vx;
       p.y += p.vy;
 
-      // Draw particle
+      // Draw particle with fast fillRect (10x faster than arc)
       this.ctx.fillStyle = p.color;
       this.ctx.globalAlpha = p.alpha;
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      this.ctx.fill();
+      this.ctx.fillRect(p.x - p.size, p.y - p.size, p.size * 2, p.size * 2);
     }
 
     this.ctx.globalAlpha = 1.0;
