@@ -1,18 +1,12 @@
 # Dependencies
 node_modules/
 .pnpm-store/
-*/node_modules/
 
-# Production builds and static exports
-dist/
-build/
-.next/
-out/
-*/dist/
-*/build/
-*/.next/
-*/out/
-public/gallery/
+# Production builds
+/dist/
+/build/
+/.next/
+/out/
 
 # TypeScript build info cache
 *.tsbuildinfo
@@ -24,7 +18,7 @@ public/gallery/
 
 # Large binary PDFs
 *.pdf
-mycin_pdfs/
+/mycin_pdfs/
 
 # System and logs
 .DS_Store
@@ -32,17 +26,17 @@ Thumbs.db
 *.log
 .cache/
 
-# Working directories (not part of the exhibition build)
-Creative Web Dev/
-First Pass Extractions/
-creative-web-development/
-expert-system-engineer/
-gemini-hyperthought/
-source-to-skill/
-story-engineer/
-terra-archive/
-the-horologist/
-the-living-archive/
-void-form/
-docs/
+# Root working directories (not part of the exhibition build)
+/Creative Web Dev/
+/First Pass Extractions/
+/creative-web-development/
+/expert-system-engineer/
+/gemini-hyperthought/
+/source-to-skill/
+/story-engineer/
+/terra-archive/
+/the-horologist/
+/the-living-archive/
+/void-form/
+/docs/
 *.py
