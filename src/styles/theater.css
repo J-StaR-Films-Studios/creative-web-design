@@ -1,0 +1,251 @@
+/* Full-Canvas Theater Engine Styling */
+
+.theater-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-monolith);
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.theater-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Ambient Exhibition HUD (Top Bar) */
+.theater-hud-header {
+  height: 52px;
+  padding: 0 24px;
+  background: rgba(10, 11, 13, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+.theater-hud-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.theater-hud-title {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.theater-hud-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: rgba(255, 59, 0, 0.15);
+  color: var(--accent-vermillion);
+  border: 1px solid rgba(255, 59, 0, 0.3);
+}
+
+.theater-hud-center {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #8C92A0;
+}
+
+.theater-telemetry-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theater-telemetry-val {
+  color: #00E5FF;
+  font-weight: 700;
+}
+
+.theater-hud-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theater-action-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.theater-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.theater-action-btn.primary {
+  background: var(--accent-vermillion);
+  border-color: var(--accent-vermillion);
+}
+
+.theater-action-btn.primary:hover {
+  background: #FF5522;
+}
+
+/* Sandbox Iframe Stage */
+.theater-stage-container {
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 52px - 44px);
+  position: relative;
+  background: #000000;
+  overflow: hidden;
+}
+
+.theater-sandbox-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* 1-Click Bottom Fast Dock */
+.theater-bottom-dock {
+  height: 44px;
+  background: rgba(10, 11, 13, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  z-index: 100;
+}
+
+.dock-item-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  padding: 5px 12px;
+  background: #14171E;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9CA3AF;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dock-item-btn:hover, .dock-item-btn.active {
+  background: #1E2430;
+  color: #FFFFFF;
+  border-color: var(--accent-vermillion);
+}
+
+/* "The Pain Behind This" Slide-Out Drawer */
+.theater-drawer {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  bottom: 44px;
+  width: min(520px, 90vw);
+  background: rgba(16, 18, 23, 0.97);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px);
+  padding: 32px;
+  overflow-y: auto;
+  z-index: 200;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #ECE7DE;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.theater-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 16px;
+}
+
+.drawer-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: #FFFFFF;
+}
+
+.drawer-close-btn {
+  background: transparent;
+  border: none;
+  color: #8C92A0;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+}
+
+.drawer-close-btn:hover {
+  color: #FFFFFF;
+}
+
+.drawer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.drawer-section-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--accent-vermillion);
+  text-transform: uppercase;
+}
+
+.drawer-section-body {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #C0C5CE;
+}
+
+.drawer-code-block {
+  background: #0E1015;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  border-radius: 4px;
+  color: #7EE787;
+  overflow-x: auto;
+}

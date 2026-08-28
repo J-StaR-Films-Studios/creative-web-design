@@ -1,0 +1,113 @@
+:root {
+  /* Surface & Paper */
+  --bg-paper: #F7F5F0;          /* Warm archival museum rag paper */
+  --bg-paper-dark: #ECE7DE;     /* Secondary physical backing card */
+  --bg-monolith: #0A0B0D;       /* Pure void graphite / dark room */
+  --bg-surface: #FFFFFF;        /* Crisp card surface */
+  --bg-code: #16181D;           /* Deep terminal graphite */
+  
+  /* Ink & Typography */
+  --ink-primary: #121316;       /* Deep carbon black */
+  --ink-secondary: #5A5D64;     /* Drafting graphite */
+  --ink-tertiary: #8C9099;      /* Muted technical timestamp */
+  --ink-border: rgba(18, 19, 22, 0.12); /* Hairline editorial grid rules */
+  --ink-border-strong: rgba(18, 19, 22, 0.24);
+  --ink-border-subtle: rgba(18, 19, 22, 0.06);
+  
+  /* Interventions & Accents */
+  --accent-vermillion: #FF3B00; /* Signal red / editorial strike */
+  --accent-terracotta: #C86432; /* Archival stamp ochre */
+  --accent-brass: #D4AF37;      /* Horological gold */
+  --accent-cyan: #00E5FF;       /* Telemetry cyan */
+  --accent-emerald: #10B981;    /* System passed check green */
+  
+  /* Typography Scale */
+  --font-serif: "Cinzel", "Playfair Display", Georgia, serif;
+  --font-editorial-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+
+  /* Layout Dimensions */
+  --header-height: 56px;
+  --gutter-width: clamp(20px, 4vw, 64px);
+  --content-max-width: 1440px;
+  
+  /* Animation Timings */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.8s;
+}
+
+/* Base resets & Mandatory Smooth Scroll Container Invariants */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  min-height: 100%;
+  background-color: var(--bg-paper);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  background-color: var(--bg-paper);
+}
+
+/* SLAIN BUG INVARIANT: Lenis smooth scrolling requires height: auto on html/body */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Dual-DOM Accessibility Invariant */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Paper Grain Texture Overlay */
+.paper-grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-repeat: repeat;
+}

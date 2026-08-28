@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RESILIENT DAVINCI — An Interactive Digital Exhibition</title>
+    <meta name="description" content="A living contemporary art & technology exhibition answering: Can a machine learn taste?" />
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/src/styles/tokens.css" />
+    <link rel="stylesheet" href="/src/styles/layout.css" />
+    <link rel="stylesheet" href="/src/styles/chapters.css" />
+    <link rel="stylesheet" href="/src/styles/theater.css" />
+  </head>
+  <body>
+    <!-- Procedural Paper Grain Texture Overlay -->
+    <div class="paper-grain-overlay">
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <filter id="noiseFilter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="0.35" />
+      </svg>
+    </div>
+
+    <!-- Dual-DOM Screen Reader Heading Structure -->
+    <h1 class="sr-only">RESILIENT DAVINCI: An Experiment in Teaching Machines How to Create</h1>
+
+    <!-- Master Fixed Museum Nav -->
+    <header class="museum-nav" id="museum-nav">
+      <div class="nav-title-group">
+        <span class="institution-title">RESILIENT DAVINCI</span>
+        <span class="archival-stamp">[ 05.2026 — PRESENT ]</span>
+      </div>
+
+      <div class="nav-controls">
+        <div class="telemetry-pill">
+          <span class="sound-pulse-dot"></span>
+          <span id="nav-telemetry-fps">60 FPS</span>
+          <span>·</span>
+          <span id="nav-telemetry-dpr">DPR 2.0</span>
+        </div>
+
+        <button class="sound-btn" id="master-sound-btn" aria-label="Toggle Procedural Audio">
+          <span class="sound-pulse-dot"></span>
+          <span id="sound-btn-label">AUDIO: OFF</span>
+        </button>
+
+        <button class="theater-quick-launch" id="nav-theater-launch">
+          <span>PROVING WORLDS ↗</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Master Exhibition Narrative Container -->
+    <main class="exhibition-container" id="exhibition-main">
+      <!-- 0.00 – 0.08 | PROLOGUE: THE FOUNDING FRUSTRATION -->
+      <section class="chapter-section act-prologue" id="prologue"></section>
+
+      <!-- 0.08 – 0.18 | CHAPTER 01: THE MACHINE DIDN'T KNOW -->
+      <section class="chapter-section act-evidence" id="act-evidence"></section>
+
+      <!-- 0.18 – 0.28 | CHAPTER 02: GO BACK -->
+      <section class="chapter-section act-goback" id="act-goback"></section>
+
+      <!-- 0.28 – 0.38 | CHAPTER 03: EXTRACT -->
+      <section class="chapter-section act-extract" id="act-extract"></section>
+
+      <!-- 0.38 – 0.50 | CHAPTER 04: FIVE MACHINES -->
+      <section class="chapter-section act-five-machines" id="act-five-machines"></section>
+
+      <!-- 0.50 – 0.62 | CHAPTER 05: THE TOURNAMENT -->
+      <section class="chapter-section act-tournament" id="act-tournament"></section>
+
+      <!-- 0.62 – 0.72 | CHAPTER 06: THE MISSING PIECE -->
+      <section class="chapter-section act-missing-piece" id="act-missing-piece"></section>
+
+      <!-- 0.72 – 0.84 | CHAPTER 07: THE PROVING GROUND -->
+      <section class="chapter-section act-proving-ground" id="act-proving-ground"></section>
+
+      <!-- 0.84 – 0.92 | CHAPTER 08: THE BATTLE SCARS -->
+      <section class="chapter-section act-battle-scars" id="act-battle-scars"></section>
+
+      <!-- 0.92 – 0.97 | CHAPTER 09: THE MACHINE -->
+      <section class="chapter-section act-the-machine" id="act-the-machine"></section>
+
+      <!-- 0.97 – 1.00 | FINAL ACT: THE OPEN EXPERIMENT -->
+      <section class="chapter-section act-open-experiment" id="act-open-experiment"></section>
+    </main>
+
+    <!-- Master Scroll Progress Indicator -->
+    <div class="master-scroll-progress">
+      <div class="master-scroll-progress-bar" id="master-progress-bar"></div>
+    </div>
+
+    <!-- Viewport Telemetry HUD -->
+    <div class="viewport-telemetry-hud" id="viewport-telemetry-hud">
+      <span id="hud-scroll-pct">SCROLL: 0.0%</span>
+      <span>|</span>
+      <span id="hud-act-name">PROLOGUE</span>
+      <span>|</span>
+      <span>ZERO GC RAF</span>
+    </div>
+
+    <!-- Application Script Bootstrap -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

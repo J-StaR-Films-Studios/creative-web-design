@@ -1,0 +1,921 @@
+/* Chapters & Acts Specific Styling */
+
+/* =========================================================================
+   ACT 00: PROLOGUE (The Founding Frustration)
+   ========================================================================= */
+.act-prologue {
+  min-height: 140vh;
+  position: relative;
+  background: var(--bg-paper);
+}
+
+.prologue-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.prologue-hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 8vw, 7.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink-primary);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.prologue-subtitle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--accent-terracotta);
+  text-transform: uppercase;
+}
+
+.prologue-typewriter-box {
+  min-height: 120px;
+  font-family: var(--font-editorial-serif);
+  font-size: clamp(1.4rem, 2.5vw, 2.4rem);
+  line-height: 1.35;
+  color: var(--ink-primary);
+  border-left: 2px solid var(--ink-primary);
+  padding-left: 24px;
+  margin-top: 24px;
+  position: relative;
+}
+
+.prologue-typewriter-box .strike-word {
+  color: var(--accent-vermillion);
+  position: relative;
+  display: inline-block;
+}
+
+.prologue-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+.prologue-resolution-strike {
+  margin-top: 40px;
+  font-family: var(--font-sans);
+  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-vermillion);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s var(--ease-out-expo);
+}
+
+.prologue-resolution-strike.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================================================
+   ACT 01: THE MACHINE DIDN'T KNOW (Forensic Evidence & Math Dissection)
+   ========================================================================= */
+.act-evidence {
+  background: var(--bg-paper-dark);
+}
+
+.evidence-table-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+@media (max-width: 1100px) {
+  .evidence-table-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .evidence-table-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.evidence-card {
+  background: #FFFFFF;
+  border: 1px solid var(--ink-border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 260px;
+  transition: all 0.3s var(--ease-out-expo);
+  cursor: pointer;
+  position: relative;
+}
+
+.evidence-card:hover, .evidence-card.active {
+  border-color: var(--accent-vermillion);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(18, 19, 22, 0.08);
+}
+
+.evidence-ref {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-tertiary);
+  letter-spacing: 0.1em;
+}
+
+.evidence-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  margin: 8px 0;
+  color: var(--ink-primary);
+}
+
+.evidence-technique {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink-secondary);
+  line-height: 1.4;
+}
+
+.evidence-math-preview {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--bg-paper);
+  padding: 8px;
+  border: 1px solid var(--ink-border-subtle);
+  color: var(--accent-terracotta);
+  border-radius: 2px;
+  margin-top: 12px;
+}
+
+.math-dissection-matrix {
+  margin-top: 48px;
+  background: #FFFFFF;
+  border: 1px solid var(--ink-border);
+  padding: 32px;
+  position: relative;
+}
+
+.dissection-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--ink-border);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.dissection-tab-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 6px 16px;
+  border: 1px solid var(--ink-border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dissection-tab-btn.active {
+  background: var(--ink-primary);
+  color: #FFFFFF;
+  border-color: var(--ink-primary);
+}
+
+.dissection-display {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
+  .dissection-display {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dissection-formula {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.6;
+  background: var(--bg-paper);
+  padding: 20px;
+  border-left: 3px solid var(--accent-vermillion);
+  color: var(--ink-primary);
+}
+
+.dissection-interactive-sandbox {
+  border: 1px solid var(--ink-border);
+  padding: 20px;
+  background: var(--bg-paper-dark);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dissection-sandbox-slider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dissection-sandbox-slider input {
+  flex: 1;
+  accent-color: var(--accent-vermillion);
+}
+
+/* =========================================================================
+   ACT 02: GO BACK (1984 Stanford Scans & 45 PDFs Compression)
+   ========================================================================= */
+.act-goback {
+  background: #ECE5D8;
+  border-top: 1px solid #D4CBBB;
+}
+
+.act-goback .chapter-title {
+  color: #2A241C;
+}
+
+.rewind-timeline-stamp {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #8C5A2B;
+  letter-spacing: 0.2em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdf-stack-pipeline-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  margin-top: 32px;
+}
+
+@media (max-width: 900px) {
+  .pdf-stack-pipeline-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pdf-cascade-container {
+  position: relative;
+  height: 380px;
+  background: #E4DCCF;
+  border: 1px solid #C8BDAC;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.pdf-cascade-card {
+  position: absolute;
+  width: 180px;
+  height: 240px;
+  background: #FAF8F4;
+  border: 1px solid #C0B5A2;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: #4A4035;
+  transition: all 0.5s var(--ease-out-expo);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lanczos-compression-box {
+  background: #F5EFE6;
+  border: 1px solid #C8BDAC;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.compression-metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed #C8BDAC;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.compression-metric-val {
+  font-weight: 700;
+  color: var(--accent-vermillion);
+}
+
+.compression-progress-track {
+  height: 8px;
+  background: #DDD5C7;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.compression-progress-fill {
+  height: 100%;
+  width: 59%;
+  background: var(--accent-terracotta);
+}
+
+/* =========================================================================
+   ACT 03: EXTRACT (44 Sources & CommonKADS P1–P6)
+   ========================================================================= */
+.act-extract {
+  background: var(--bg-monolith);
+  color: #F7F5F0;
+}
+
+.act-extract .chapter-title {
+  color: #FFFFFF;
+}
+
+.act-extract .chapter-subtitle {
+  color: #A0A5B0;
+}
+
+.act-extract .chapter-serial {
+  color: var(--accent-cyan);
+}
+
+.extract-flow-canvas-container {
+  width: 100%;
+  height: 380px;
+  background: #111317;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  margin-top: 24px;
+}
+
+.commonkads-probes-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (max-width: 1024px) {
+  .commonkads-probes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .commonkads-probes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.probe-card {
+  background: #16191F;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.probe-card:hover, .probe-card.active {
+  border-color: var(--accent-cyan);
+  background: #1C212B;
+}
+
+.probe-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+.probe-name {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.probe-desc {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #8C92A0;
+  line-height: 1.4;
+}
+
+/* =========================================================================
+   ACT 04: FIVE MACHINES (Micro-Engines Viewport)
+   ========================================================================= */
+.act-five-machines {
+  background: var(--bg-paper);
+}
+
+.doorway-portals-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+@media (max-width: 1200px) {
+  .doorway-portals-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .doorway-portals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.doorway-card {
+  background: #FFFFFF;
+  border: 1px solid var(--ink-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-out-expo);
+  cursor: pointer;
+}
+
+.doorway-card:hover {
+  border-color: var(--accent-vermillion);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(18, 19, 22, 0.1);
+}
+
+.doorway-canvas-wrapper {
+  width: 100%;
+  height: 200px;
+  background: #0D0E11;
+  position: relative;
+  overflow: hidden;
+}
+
+.doorway-canvas-wrapper canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.doorway-meta {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.doorway-index {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent-vermillion);
+}
+
+.doorway-title {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--ink-primary);
+  font-weight: 600;
+}
+
+.doorway-tech {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-secondary);
+}
+
+/* =========================================================================
+   ACT 05: THE TOURNAMENT (Multi-Agent Bracket)
+   ========================================================================= */
+.act-tournament {
+  background: #0E1013;
+  color: #ECE7DE;
+}
+
+.act-tournament .chapter-title {
+  color: #FFFFFF;
+}
+
+.act-tournament .chapter-subtitle {
+  color: #9EA3AD;
+}
+
+.tournament-bracket-wrapper {
+  margin-top: 36px;
+  padding: 32px;
+  background: #14171D;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow-x: auto;
+}
+
+.bracket-stages-row {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr 0.8fr;
+  gap: 32px;
+  min-width: 800px;
+  position: relative;
+}
+
+.bracket-stage-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stage-header-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--accent-vermillion);
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+.candidate-node {
+  background: #1A1E26;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.candidate-node.champion {
+  border-color: var(--accent-brass);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+.candidate-node .node-id {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #8C92A0;
+}
+
+.candidate-node .node-model {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.candidate-node .node-verdict {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-vermillion);
+}
+
+.candidate-node.champion .node-verdict {
+  color: var(--accent-brass);
+}
+
+/* =========================================================================
+   ACT 06: THE MISSING PIECE (4-Track Timeline)
+   ========================================================================= */
+.act-missing-piece {
+  background: var(--bg-paper);
+}
+
+.tracks-master-timeline {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timeline-track-row {
+  background: #FFFFFF;
+  border: 1px solid var(--ink-border);
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 24px;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+@media (max-width: 768px) {
+  .timeline-track-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.track-label-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.track-number {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-vermillion);
+  letter-spacing: 0.1em;
+}
+
+.track-name {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.track-visual-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.track-phase-segment {
+  flex: 1;
+  background: var(--bg-paper-dark);
+  border: 1px solid var(--ink-border-subtle);
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-secondary);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.track-phase-segment::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--accent-terracotta);
+}
+
+/* =========================================================================
+   ACT 07: THE PROVING GROUND & FULL-CANVAS LAUNCHPAD
+   ========================================================================= */
+.act-proving-ground {
+  background: var(--bg-monolith);
+  color: #ECE7DE;
+}
+
+.act-proving-ground .chapter-title {
+  color: #FFFFFF;
+}
+
+.proving-monoliths-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 36px;
+}
+
+@media (max-width: 1200px) {
+  .proving-monoliths-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .proving-monoliths-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.monolith-card {
+  background: #14171E;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+  transition: all 0.35s var(--ease-out-expo);
+  cursor: pointer;
+  position: relative;
+}
+
+.monolith-card:hover {
+  border-color: var(--accent-vermillion);
+  transform: translateY(-8px);
+  background: #1A1F29;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+}
+
+.monolith-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.monolith-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-vermillion);
+}
+
+.monolith-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+}
+
+.monolith-name {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 500;
+  color: #FFFFFF;
+  margin: 12px 0 6px;
+}
+
+.monolith-desc {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  color: #9CA3AF;
+}
+
+.monolith-launch-btn {
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s;
+}
+
+.monolith-card:hover .monolith-launch-btn {
+  background: var(--accent-vermillion);
+  border-color: var(--accent-vermillion);
+  color: #FFFFFF;
+}
+
+/* =========================================================================
+   ACT 08: THE BATTLE SCARS (Crime Scene of Slain Bugs)
+   ========================================================================= */
+.act-battle-scars {
+  background: var(--bg-paper-dark);
+}
+
+.battle-scars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 32px;
+}
+
+@media (max-width: 1024px) {
+  .battle-scars-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scar-card {
+  background: #FFFFFF;
+  border: 1px solid var(--ink-border);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scar-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent-vermillion);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.scar-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.scar-code-diff {
+  background: var(--bg-code);
+  color: #E6EDF3;
+  padding: 16px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.scar-code-diff .slain-comment {
+  color: #FF7B72;
+}
+
+.scar-code-diff .fix-line {
+  color: #7EE787;
+}
+
+/* =========================================================================
+   ACT 09: THE MACHINE (Unified Animated Kinetic DAG)
+   ========================================================================= */
+.act-the-machine {
+  background: var(--bg-monolith);
+  color: #FFFFFF;
+}
+
+.act-the-machine .chapter-title {
+  color: #FFFFFF;
+}
+
+.dag-canvas-container {
+  width: 100%;
+  height: 520px;
+  background: #0E1015;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  margin-top: 32px;
+}
+
+/* =========================================================================
+   FINAL ACT: THE OPEN EXPERIMENT ("We Don't Know Yet.")
+   ========================================================================= */
+.act-open-experiment {
+  min-height: 100vh;
+  background: var(--bg-paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 100px var(--gutter-width) 60px;
+}
+
+.experiment-final-question {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 1.05;
+  color: var(--ink-primary);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.experiment-final-answer {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 7.5vw, 6.5rem);
+  line-height: 1;
+  color: var(--accent-vermillion);
+  font-weight: 700;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+}
+
+.experiment-final-epigraph {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+  max-width: 640px;
+  margin-bottom: 48px;
+}
+
+.experiment-credits-box {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--ink-border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-tertiary);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
