@@ -218,7 +218,7 @@ export default function Home() {
   return (
     <main
       ref={containerRef}
-      className="relative w-full min-h-screen bg-[#11141a] overflow-hidden select-none"
+      className="relative w-full min-h-screen bg-[#0c0e12] overflow-hidden select-none"
     >
       {/* 1. Fixed Three.js WebGL Spatial Canvas */}
       <canvas id="archive-canvas" className="fixed inset-0 w-full h-full" />

@@ -48,10 +48,10 @@ export class ArchiveEngine {
     this.lenis = lenis || null;
     this.clock = new THREE.Clock();
 
-    // 1. Scene Setup — Warm architectural museum atmosphere
+    // 1. Scene Setup — Moody, cinematic architectural museum atmosphere
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x11141a);
-    this.scene.fog = new THREE.Fog(0x11141a, 30, 320);
+    this.scene.background = new THREE.Color(0x0c0e12);
+    this.scene.fog = new THREE.Fog(0x0c0e12, 25, 280);
 
     // 2. Camera Setup
     this.camera = new THREE.PerspectiveCamera(
@@ -62,7 +62,7 @@ export class ArchiveEngine {
     );
     this.camera.position.set(0, 3.0, 20);
 
-    // 3. Renderer Setup — High-clarity ACESFilmic tone mapping
+    // 3. Renderer Setup — Balanced ACESFilmic tone mapping
     const canvas = container.querySelector('#archive-canvas') as HTMLCanvasElement;
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas || undefined,
@@ -75,7 +75,7 @@ export class ArchiveEngine {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2.0));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.4;
+    this.renderer.toneMappingExposure = 1.25;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -92,11 +92,11 @@ export class ArchiveEngine {
     );
     this.composer.addPass(bloomPass);
 
-    // 5. Lighting Setup — Bright, multi-layered architectural gallery lighting
-    const ambientLight = new THREE.AmbientLight(0xf0f4fa, 0.85);
+    // 5. Lighting Setup — Sculpted directional & downlight illumination
+    const ambientLight = new THREE.AmbientLight(0xf0f4fa, 0.52);
     this.scene.add(ambientLight);
 
-    const mainKeyLight = new THREE.DirectionalLight(0xfff7ec, 2.4);
+    const mainKeyLight = new THREE.DirectionalLight(0xfff7ec, 1.8);
     mainKeyLight.position.set(20, 35, 20);
     mainKeyLight.castShadow = true;
     mainKeyLight.shadow.mapSize.width = 2048;
@@ -104,14 +104,14 @@ export class ArchiveEngine {
     mainKeyLight.shadow.bias = -0.0001;
     this.scene.add(mainKeyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xdde8f5, 1.2);
+    const fillLight = new THREE.DirectionalLight(0xdde8f5, 0.8);
     fillLight.position.set(-20, 20, -60);
     this.scene.add(fillLight);
 
     // Gallery Ceiling Downlights along the Spine
     const roomPositionsZ = [-30, -80, -130, -180, -230, -280];
     roomPositionsZ.forEach((z) => {
-      const downlight = new THREE.PointLight(0xfff2e2, 1.6, 50, 1.2);
+      const downlight = new THREE.PointLight(0xffeedd, 1.2, 45, 1.3);
       downlight.position.set(0, 12, z);
       downlight.castShadow = true;
       this.scene.add(downlight);
@@ -125,11 +125,11 @@ export class ArchiveEngine {
     });
 
     // Cursor-following light
-    this.cursorLight = new THREE.PointLight(0xfff5e8, 1.2, 35);
+    this.cursorLight = new THREE.PointLight(0xfff5e8, 1.0, 30);
     this.cursorLight.position.set(0, 3, 10);
     this.scene.add(this.cursorLight);
 
-    this.spotLight = new THREE.SpotLight(0xc86432, 2.5, 45, Math.PI / 5, 0.35);
+    this.spotLight = new THREE.SpotLight(0xc86432, 2.2, 40, Math.PI / 5, 0.35);
     this.spotLight.position.set(0, 12, 0);
     this.scene.add(this.spotLight);
 
@@ -170,8 +170,8 @@ export class ArchiveEngine {
     // Continuous Brutalist Travertine & Concrete Gallery Floor
     const floorGeo = new THREE.PlaneGeometry(140, 420, 32, 64);
     const floorMat = new THREE.MeshStandardMaterial({
-      color: 0x222631,
-      roughness: 0.55,
+      color: 0x161922,
+      roughness: 0.58,
       metalness: 0.2,
     });
     const floor = new THREE.Mesh(floorGeo, floorMat);
@@ -183,8 +183,8 @@ export class ArchiveEngine {
     // Monumental Ceiling with Coffered Panels
     const ceilingGeo = new THREE.PlaneGeometry(140, 420);
     const ceilingMat = new THREE.MeshStandardMaterial({
-      color: 0x181a22,
-      roughness: 0.85,
+      color: 0x0f1116,
+      roughness: 0.9,
     });
     const ceiling = new THREE.Mesh(ceilingGeo, ceilingMat);
     ceiling.rotation.x = Math.PI / 2;
@@ -194,7 +194,7 @@ export class ArchiveEngine {
     // Monumental Concrete Gallery Columns along the Spine
     const columnGeo = new THREE.BoxGeometry(1.6, 16, 1.6);
     const columnMat = new THREE.MeshStandardMaterial({
-      color: 0x343a4a,
+      color: 0x262b36,
       roughness: 0.65,
       metalness: 0.2,
     });
@@ -218,12 +218,12 @@ export class ArchiveEngine {
     // Outer Boundary Monumental Walls — Architectural Limestone & Fluted Panels
     const wallGeo = new THREE.PlaneGeometry(420, 22);
     const leftWallMat = new THREE.MeshStandardMaterial({
-      color: 0x2b303d,
+      color: 0x1e222c,
       roughness: 0.6,
       metalness: 0.15,
     });
     const rightWallMat = new THREE.MeshStandardMaterial({
-      color: 0x272c38,
+      color: 0x1b1f26,
       roughness: 0.6,
       metalness: 0.15,
     });
