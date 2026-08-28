@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /gallery/
+
+Sitemap: https://design.jstarstudios.com/sitemap.xml

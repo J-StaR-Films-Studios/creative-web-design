@@ -31,3 +31,18 @@ mycin_pdfs/
 Thumbs.db
 *.log
 .cache/
+
+# Working directories (not part of the exhibition build)
+Creative Web Dev/
+First Pass Extractions/
+creative-web-development/
+expert-system-engineer/
+gemini-hyperthought/
+source-to-skill/
+story-engineer/
+terra-archive/
+the-horologist/
+the-living-archive/
+void-form/
+docs/
+*.py

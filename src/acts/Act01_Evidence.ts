@@ -7,6 +7,7 @@ export class Act01_Evidence {
   private observer!: IntersectionObserver;
   private autoCycleIndex: number = 0;
   private autoCycleTimer: number | null = null;
+  private animFrameId: number | null = null;
 
   public getCurrentTab(): string {
     return this.currentTab;
@@ -116,7 +117,6 @@ export class Act01_Evidence {
 
     const cards = this.containerEl.querySelectorAll('.evidence-card');
     cards.forEach((card) => {
-      // Hover and Mobile Tap Support
       const activateCard = () => {
         cards.forEach((c) => c.classList.remove('active'));
         card.classList.add('active');
@@ -145,7 +145,6 @@ export class Act01_Evidence {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Auto-cycle through evidence cards gently on mobile view
             if (!this.autoCycleTimer && window.innerWidth < 768) {
               this.autoCycleTimer = window.setInterval(() => {
                 this.autoCycleIndex = (this.autoCycleIndex + 1) % cards.length;
@@ -179,7 +178,15 @@ export class Act01_Evidence {
     this.observer.observe(this.containerEl);
   }
 
+  private cancelCurrentAnim(): void {
+    if (this.animFrameId !== null) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+  }
+
   private renderTabContent(tab: string): void {
+    this.cancelCurrentAnim();
     const displayEl = this.containerEl.querySelector('#dissection-display-content')!;
 
     if (tab === 'spring') {
@@ -191,76 +198,184 @@ export class Act01_Evidence {
             <code>F_repel = -(Δx / r) * (1 - r / R_max) * F_factor</code>
           </div>
           <p style="margin-top: 14px; font-size: 13px; color: var(--ink-secondary); line-height: 1.5;">
-            Particles and cursor followers must remember their immutable origin anchor <code>(baseX, baseY)</code>. Repelled by pointer velocity, they elastically reconstruct 100% legibility.
+            Drag your mouse/finger across the canvas below or adjust sliders to test the harmonic oscillator live.
           </p>
         </div>
         <div class="dissection-interactive-sandbox">
-          <div><strong>INTERACTIVE SPRING TESTER</strong></div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong>LIVE SPRING OSCILLATOR</strong>
+            <span style="font-size: 10px; color: var(--accent-terracotta);">DRAG CANVAS OR SLIDERS</span>
+          </div>
+
+          <canvas id="spring-canvas" width="280" height="110" style="width: 100%; height: 110px; background: #FAF8F4; border: 1px solid var(--ink-border); display: block; cursor: crosshair;"></canvas>
+
           <div class="dissection-sandbox-slider">
             <label>Stiffness (k):</label>
-            <input type="range" id="slider-k" min="0.01" max="0.2" step="0.01" value="0.06">
-            <span id="val-k">0.06</span>
+            <input type="range" id="slider-k" min="0.01" max="0.25" step="0.01" value="0.08">
+            <span id="val-k">0.08</span>
           </div>
           <div class="dissection-sandbox-slider">
             <label>Damping (d):</label>
-            <input type="range" id="slider-d" min="0.5" max="0.98" step="0.02" value="0.88">
+            <input type="range" id="slider-d" min="0.60" max="0.98" step="0.01" value="0.88">
             <span id="val-d">0.88</span>
           </div>
-          <div style="font-size: 11px; color: var(--accent-vermillion); margin-top: 8px;">
-            Harmonic Period: <span id="spring-period">12.4 frames to settle</span>
+          <div style="font-size: 11px; color: var(--accent-vermillion); display: flex; justify-content: space-between;">
+            <span>Oscillation Settling: <strong id="spring-period">8.5 frames</strong></span>
+            <span style="color: var(--ink-tertiary);">f(x) = e^(-dt) * cos(ωt)</span>
           </div>
         </div>
       `;
 
+      const canvas = displayEl.querySelector('#spring-canvas') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d')!;
       const kInput = displayEl.querySelector('#slider-k') as HTMLInputElement;
       const dInput = displayEl.querySelector('#slider-d') as HTMLInputElement;
       const kVal = displayEl.querySelector('#val-k')!;
       const dVal = displayEl.querySelector('#val-d')!;
       const periodVal = displayEl.querySelector('#spring-period')!;
 
+      let stiffness = parseFloat(kInput.value);
+      let damping = parseFloat(dInput.value);
+
       const updateValues = () => {
-        kVal.textContent = kInput.value;
-        dVal.textContent = dInput.value;
-        const k = parseFloat(kInput.value);
-        const d = parseFloat(dInput.value);
-        const frames = Math.round((2 * Math.PI) / Math.sqrt(k) * (1 / d));
-        periodVal.textContent = `${frames} frames to settle`;
+        stiffness = parseFloat(kInput.value);
+        damping = parseFloat(dInput.value);
+        kVal.textContent = stiffness.toFixed(2);
+        dVal.textContent = damping.toFixed(2);
+        const frames = Math.round((2 * Math.PI) / Math.sqrt(stiffness) * (1 / damping));
+        periodVal.textContent = `${frames} frames`;
       };
 
       kInput.addEventListener('input', updateValues);
       dInput.addEventListener('input', updateValues);
+
+      // Interactive Spring Physics Loop
+      let posX = canvas.width / 2;
+      let posY = canvas.height / 2;
+      const targetX = canvas.width / 2;
+      const targetY = canvas.height / 2;
+      let vx = 0;
+      let vy = 0;
+      let isDragging = false;
+
+      const handlePointer = (clientX: number, clientY: number) => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        posX = (clientX - rect.left) * scaleX;
+        posY = (clientY - rect.top) * scaleY;
+        vx = 0;
+        vy = 0;
+      };
+
+      canvas.addEventListener('mousedown', (e) => { isDragging = true; handlePointer(e.clientX, e.clientY); });
+      window.addEventListener('mousemove', (e) => { if (isDragging) handlePointer(e.clientX, e.clientY); });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+
+      canvas.addEventListener('touchstart', (e) => { isDragging = true; if (e.touches[0]) handlePointer(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      canvas.addEventListener('touchmove', (e) => { if (isDragging && e.touches[0]) handlePointer(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+      window.addEventListener('touchend', () => { isDragging = false; });
+
+      // Initial kick impulse
+      vx = 8;
+      vy = -4;
+
+      const renderSpring = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (!isDragging) {
+          const ax = -stiffness * (posX - targetX);
+          const ay = -stiffness * (posY - targetY);
+          vx = (vx + ax) * damping;
+          vy = (vy + ay) * damping;
+          posX += vx;
+          posY += vy;
+        }
+
+        // Draw Anchor
+        ctx.fillStyle = '#C86432';
+        ctx.beginPath();
+        ctx.arc(targetX, targetY, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw Spring Coils
+        ctx.strokeStyle = '#FF3B00';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(targetX, targetY);
+
+        const segments = 8;
+        for (let i = 1; i <= segments; i++) {
+          const t = i / segments;
+          const px = targetX + (posX - targetX) * t;
+          const py = targetY + (posY - targetY) * t;
+          const perpX = -(posY - targetY) * 0.15 * Math.sin(t * Math.PI * 4);
+          const perpY = (posX - targetX) * 0.15 * Math.sin(t * Math.PI * 4);
+          ctx.lineTo(px + perpX, py + perpY);
+        }
+        ctx.lineTo(posX, posY);
+        ctx.stroke();
+
+        // Draw Oscillating Mass Node
+        ctx.fillStyle = '#121316';
+        ctx.beginPath();
+        ctx.arc(posX, posY, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        this.animFrameId = requestAnimationFrame(renderSpring);
+      };
+
+      this.animFrameId = requestAnimationFrame(renderSpring);
+
     } else if (tab === 'luminance') {
-      const lum = calculateLuminance(255, 120, 40).toFixed(2);
       displayEl.innerHTML = `
         <div>
           <div class="dissection-formula">
             <strong>Photometric Luminance (ITU-R BT.601)</strong><br>
             <code>Luminance = √(0.299 R² + 0.587 G² + 0.114 B²) / 100</code><br><br>
-            <code>Index = (y * 4 * width) + (x * 4)</code>
+            <code>Threshold = Perceived > 1.30 ? BLACK : WHITE</code>
           </div>
           <p style="margin-top: 14px; font-size: 13px; color: var(--ink-secondary); line-height: 1.5;">
-            Human eyes perceive green far more intensely than blue. Calculating true photometric luminance ensures text particles only spawn on readable letterforms.
+            Human eyes perceive green far more intensely than blue. Calculating true photometric luminance ensures text particles dynamically shift contrast in real-time.
           </p>
         </div>
         <div class="dissection-interactive-sandbox">
-          <div><strong>LUMINANCE SAMPLER</strong></div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong>LIVE LUMINANCE CONTRAST SAMPLER</strong>
+          </div>
+
+          <!-- Live Dynamic Color Swatch & Contrast Text Test -->
+          <div id="lum-live-swatch" style="padding: 16px; border-radius: 4px; border: 1px solid var(--ink-border); transition: background-color 0.1s; text-align: center;">
+            <div id="lum-contrast-text" style="font-family: var(--font-serif); font-size: 15px; font-weight: 700; letter-spacing: 0.05em; transition: color 0.1s;">
+              THE MACHINE DIDN'T KNOW
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 10px; margin-top: 4px; opacity: 0.85;">
+              Contrast Guard: <span id="lum-text-color-label">WHITE</span>
+            </div>
+          </div>
+
           <div class="dissection-sandbox-slider">
-            <label>R (Red):</label>
+            <label style="color: #FF5533; font-weight: bold;">R (Red):</label>
             <input type="range" id="slider-r" min="0" max="255" value="255">
             <span id="val-r">255</span>
           </div>
           <div class="dissection-sandbox-slider">
-            <label>G (Green):</label>
+            <label style="color: #10B981; font-weight: bold;">G (Green):</label>
             <input type="range" id="slider-g" min="0" max="255" value="120">
             <span id="val-g">120</span>
           </div>
           <div class="dissection-sandbox-slider">
-            <label>B (Blue):</label>
+            <label style="color: #00E5FF; font-weight: bold;">B (Blue):</label>
             <input type="range" id="slider-b" min="0" max="255" value="40">
             <span id="val-b">40</span>
           </div>
-          <div style="font-size: 12px; color: var(--accent-vermillion); margin-top: 8px;">
-            Perceived Luminance: <strong id="lum-result">${lum}</strong>
+          
+          <div style="font-size: 12px; color: var(--accent-vermillion); display: flex; justify-content: space-between; align-items: center; padding-top: 4px; border-top: 1px dashed var(--ink-border);">
+            <span>BT.601 Metric: <strong id="lum-result">1.68</strong></span>
+            <span id="lum-eval" style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-primary); font-weight: bold;">LIGHT BACKGROUND</span>
           </div>
         </div>
       `;
@@ -268,7 +383,11 @@ export class Act01_Evidence {
       const rIn = displayEl.querySelector('#slider-r') as HTMLInputElement;
       const gIn = displayEl.querySelector('#slider-g') as HTMLInputElement;
       const bIn = displayEl.querySelector('#slider-b') as HTMLInputElement;
-      const lumRes = displayEl.querySelector('#lum-result')!;
+      const lumRes = displayEl.querySelector('#lum-result') as HTMLElement;
+      const lumEval = displayEl.querySelector('#lum-eval') as HTMLElement;
+      const liveSwatch = displayEl.querySelector('#lum-live-swatch') as HTMLElement;
+      const contrastText = displayEl.querySelector('#lum-contrast-text') as HTMLElement;
+      const colorLabel = displayEl.querySelector('#lum-text-color-label') as HTMLElement;
 
       const updateLum = () => {
         const r = parseInt(rIn.value, 10);
@@ -277,14 +396,37 @@ export class Act01_Evidence {
         (displayEl.querySelector('#val-r') as HTMLElement).textContent = r.toString();
         (displayEl.querySelector('#val-g') as HTMLElement).textContent = g.toString();
         (displayEl.querySelector('#val-b') as HTMLElement).textContent = b.toString();
-        lumRes.textContent = calculateLuminance(r, g, b).toFixed(2);
+
+        const lumVal = calculateLuminance(r, g, b);
+        lumRes.textContent = lumVal.toFixed(2);
+
+        // Update live background swatch
+        liveSwatch.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+        // Dynamic contrast inversion based on perceived luminance
+        if (lumVal > 1.30) {
+          contrastText.style.color = '#0A0B0D';
+          contrastText.style.textShadow = 'none';
+          colorLabel.textContent = 'BLACK (#0A0B0D)';
+          colorLabel.style.color = '#0A0B0D';
+          lumEval.textContent = 'HIGH LUMINANCE (LIGHT)';
+          lumEval.style.color = '#C86432';
+        } else {
+          contrastText.style.color = '#FFFFFF';
+          contrastText.style.textShadow = '0 1px 4px rgba(0,0,0,0.5)';
+          colorLabel.textContent = 'WHITE (#FFFFFF)';
+          colorLabel.style.color = '#FFFFFF';
+          lumEval.textContent = 'LOW LUMINANCE (DARK)';
+          lumEval.style.color = '#00E5FF';
+        }
       };
 
       rIn.addEventListener('input', updateLum);
       gIn.addEventListener('input', updateLum);
       bIn.addEventListener('input', updateLum);
+      updateLum();
+
     } else if (tab === 'cover') {
-      const dims = getCoverDimensions(1920, 1080, 1000, 1000);
       displayEl.innerHTML = `
         <div>
           <div class="dissection-formula">
@@ -295,21 +437,73 @@ export class Act01_Evidence {
             );</code>
           </div>
           <p style="margin-top: 14px; font-size: 13px; color: var(--ink-secondary); line-height: 1.5;">
-            Prevents texture stretching and aspect distortion when rendering full-bleed canvases or video frame sequences across varying viewport aspect ratios.
+            Prevents texture stretching and aspect distortion by scaling media proportionally to fill any container aspect ratio. Drag the sliders to test.
           </p>
         </div>
         <div class="dissection-interactive-sandbox">
-          <div><strong>CONTAINER COVER MATH</strong></div>
-          <div style="padding: 10px; background: #FFF; border: 1px solid var(--ink-border);">
-            <div>Viewport: 1920 × 1080 (16:9)</div>
-            <div>Media Texture: 1000 × 1000 (1:1)</div>
-            <div style="color: var(--accent-vermillion); margin-top: 6px;">
-              Computed Render Size: <strong>${dims.width} × ${dims.height}px</strong><br>
-              Centering Offset: <strong>(${dims.offsetX}px, ${dims.offsetY}px)</strong>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong>LIVE GLSL ASPECT COVER TESTER</strong>
+          </div>
+
+          <!-- Live Interactive Aspect Box -->
+          <div style="position: relative; width: 100%; height: 110px; background: #0E1015; border: 1px solid var(--ink-border); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <div id="aspect-live-container" style="position: relative; width: 220px; height: 90px; border: 2px dashed #00E5FF; overflow: hidden; display: flex; align-items: center; justify-content: center; background: rgba(0,229,255,0.05); transition: all 0.15s ease-out;">
+              <div id="aspect-live-media" style="position: absolute; background: linear-gradient(135deg, #FF3B00, #C86432, #D4AF37); opacity: 0.85; border: 1px solid #FFF; display: flex; align-items: center; justify-content: center; color: #FFF; font-family: var(--font-mono); font-size: 9px; font-weight: bold; transition: all 0.15s ease-out;">
+                COVER MEDIA
+              </div>
             </div>
+          </div>
+
+          <div class="dissection-sandbox-slider">
+            <label>Viewport Aspect:</label>
+            <input type="range" id="slider-vp-w" min="100" max="250" value="220">
+            <span id="val-vp">16:9</span>
+          </div>
+          <div class="dissection-sandbox-slider">
+            <label>Media Texture Aspect:</label>
+            <input type="range" id="slider-media-w" min="60" max="200" value="120">
+            <span id="val-media">1:1</span>
+          </div>
+
+          <div style="font-size: 11px; color: var(--accent-vermillion); border-top: 1px dashed var(--ink-border); padding-top: 6px;">
+            Render Dimensions: <strong id="aspect-calc-size">220 × 220px</strong> | Offset: <strong id="aspect-calc-offset">(0px, -65px)</strong>
           </div>
         </div>
       `;
+
+      const vpSlider = displayEl.querySelector('#slider-vp-w') as HTMLInputElement;
+      const mediaSlider = displayEl.querySelector('#slider-media-w') as HTMLInputElement;
+      const liveContainer = displayEl.querySelector('#aspect-live-container') as HTMLElement;
+      const liveMedia = displayEl.querySelector('#aspect-live-media') as HTMLElement;
+      const calcSize = displayEl.querySelector('#aspect-calc-size')!;
+      const calcOffset = displayEl.querySelector('#aspect-calc-offset')!;
+      const valVp = displayEl.querySelector('#val-vp')!;
+      const valMedia = displayEl.querySelector('#val-media')!;
+
+      const updateAspect = () => {
+        const vpW = parseInt(vpSlider.value, 10);
+        const vpH = 90;
+        const mediaW = parseInt(mediaSlider.value, 10);
+        const mediaH = 120;
+
+        liveContainer.style.width = `${vpW}px`;
+        valVp.textContent = `${(vpW / vpH).toFixed(2)}:1`;
+        valMedia.textContent = `${(mediaW / mediaH).toFixed(2)}:1`;
+
+        const dims = getCoverDimensions(vpW, vpH, mediaW, mediaH);
+        liveMedia.style.width = `${dims.width}px`;
+        liveMedia.style.height = `${dims.height}px`;
+        liveMedia.style.left = `${dims.offsetX}px`;
+        liveMedia.style.top = `${dims.offsetY}px`;
+
+        calcSize.textContent = `${dims.width} × ${dims.height}px`;
+        calcOffset.textContent = `(${dims.offsetX}px, ${dims.offsetY}px)`;
+      };
+
+      vpSlider.addEventListener('input', updateAspect);
+      mediaSlider.addEventListener('input', updateAspect);
+      updateAspect();
+
     } else if (tab === 'noise') {
       displayEl.innerHTML = `
         <div>
@@ -317,26 +511,101 @@ export class Act01_Evidence {
             <strong>4-Octave Fractional Brownian Motion (FBM)</strong><br>
             <code>float fbm(vec2 p) {<br>
             &nbsp;&nbsp;float v = 0.0; float a = 0.5;<br>
-            &nbsp;&nbsp;for (int i = 0; i < 4; i++) {<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;v += a * snoise(p); p *= 2.0; a *= 0.5;<br>
+            &nbsp;&nbsp;for (int i = 0; i < octaves; i++) {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;v += a * snoise(p); p *= lacunarity; a *= gain;<br>
             &nbsp;&nbsp;}<br>
             &nbsp;&nbsp;return v;<br>
             }</code>
           </div>
           <p style="margin-top: 14px; font-size: 13px; color: var(--ink-secondary); line-height: 1.5;">
-            By layering successive octaves of Simplex noise with doubling frequency and halving amplitude, continuous fluid membranes and organic surface ripples are generated.
+            By layering successive octaves of Simplex noise, continuous fluid membranes and organic surface ripples are generated live on the canvas.
           </p>
         </div>
         <div class="dissection-interactive-sandbox">
-          <div><strong>FBM ATTRIBUTES</strong></div>
-          <div>Octaves: <strong>4</strong></div>
-          <div>Lacunarity: <strong>2.0</strong></div>
-          <div>Gain / Persistence: <strong>0.5</strong></div>
-          <div style="color: var(--accent-vermillion); margin-top: 6px;">
-            GPU Uniform: <code>uTime * 0.001</code>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong>LIVE FBM SIMPLEX NOISE CANVAS</strong>
+            <span style="font-size: 10px; color: var(--accent-cyan);">GPU SHADER SIMULATION</span>
+          </div>
+
+          <canvas id="noise-canvas" width="280" height="110" style="width: 100%; height: 110px; background: #0A0B0D; border: 1px solid var(--ink-border); display: block;"></canvas>
+
+          <div class="dissection-sandbox-slider">
+            <label>Octaves (Layers):</label>
+            <input type="range" id="slider-octaves" min="1" max="6" step="1" value="4">
+            <span id="val-octaves">4</span>
+          </div>
+          <div class="dissection-sandbox-slider">
+            <label>Lacunarity (Freq):</label>
+            <input type="range" id="slider-lacunarity" min="1.2" max="3.0" step="0.1" value="2.0">
+            <span id="val-lacunarity">2.0</span>
+          </div>
+          <div style="font-size: 11px; color: var(--accent-cyan); display: flex; justify-content: space-between; border-top: 1px dashed var(--ink-border); padding-top: 6px;">
+            <span>Frequency Multiplier: <strong id="val-freq">2.0x / Octave</strong></span>
+            <span>Uniform: <code>uTime * 0.001</code></span>
           </div>
         </div>
       `;
+
+      const canvas = displayEl.querySelector('#noise-canvas') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d')!;
+      const octInput = displayEl.querySelector('#slider-octaves') as HTMLInputElement;
+      const lacInput = displayEl.querySelector('#slider-lacunarity') as HTMLInputElement;
+      const octVal = displayEl.querySelector('#val-octaves')!;
+      const lacVal = displayEl.querySelector('#val-lacunarity')!;
+      const freqVal = displayEl.querySelector('#val-freq')!;
+
+      let octaves = parseInt(octInput.value, 10);
+      let lacunarity = parseFloat(lacInput.value);
+
+      const updateNoiseParams = () => {
+        octaves = parseInt(octInput.value, 10);
+        lacunarity = parseFloat(lacInput.value);
+        octVal.textContent = octaves.toString();
+        lacVal.textContent = lacunarity.toFixed(1);
+        freqVal.textContent = `${lacunarity.toFixed(1)}x / Octave`;
+      };
+
+      octInput.addEventListener('input', updateNoiseParams);
+      lacInput.addEventListener('input', updateNoiseParams);
+
+      // Fast procedural FBM noise rendering in 2D canvas
+      let noiseTime = 0;
+      const renderNoise = () => {
+        noiseTime += 0.03;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const w = canvas.width;
+        const h = canvas.height;
+        const step = 8; // Step for high performance rendering
+
+        for (let y = 0; y < h; y += step) {
+          for (let x = 0; x < w; x += step) {
+            let value = 0;
+            let amp = 0.5;
+            let freq = 0.02;
+
+            for (let o = 0; o < octaves; o++) {
+              const nx = x * freq + noiseTime * 0.3;
+              const ny = y * freq + noiseTime * 0.2;
+              value += Math.sin(nx) * Math.cos(ny) * amp;
+              freq *= lacunarity;
+              amp *= 0.5;
+            }
+
+            const intensity = Math.floor(((value + 1) * 0.5) * 255);
+            const r = Math.floor(intensity * 0.1);
+            const g = Math.floor(intensity * 0.9);
+            const b = Math.floor(intensity * 1.0);
+
+            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            ctx.fillRect(x, y, step, step);
+          }
+        }
+
+        this.animFrameId = requestAnimationFrame(renderNoise);
+      };
+
+      this.animFrameId = requestAnimationFrame(renderNoise);
     }
   }
 }

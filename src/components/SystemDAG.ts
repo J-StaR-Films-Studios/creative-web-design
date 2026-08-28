@@ -40,15 +40,18 @@ export class SystemDAGRenderer {
   }
 
   private initLayout(): void {
+    const isMobile = window.innerWidth < 768;
+    const s = isMobile ? 0.7 : 1; // Scale factor for mobile
+
     this.nodes = [
-      { id: 'curiosity', label: 'HUMAN CURIOSITY', sub: 'Existential Query', x: 0.5, y: 0.08, width: 160, height: 40, color: '#FFFFFF' },
-      { id: 'raw', label: 'RAW KNOWLEDGE', sub: 'Literature & Videos', x: 0.5, y: 0.20, width: 160, height: 40, color: '#ECE7DE' },
-      { id: 'kem', label: 'KEM / MYCIN', sub: 'CommonKADS P1–P6', x: 0.5, y: 0.32, width: 170, height: 40, color: '#C86432' },
-      { id: 'extract', label: '44 MODULAR SKILLS', sub: 'Google AI Studio', x: 0.5, y: 0.44, width: 180, height: 40, color: '#00E5FF' },
-      { id: 'tournament', label: 'MULTI-AGENT TOURNAMENT', sub: 'Flash vs Pro Finals', x: 0.5, y: 0.56, width: 200, height: 40, color: '#D4AF37' },
-      { id: 'champion', label: 'CHAMPION AI SKILL', sub: 'creative-web-development', x: 0.5, y: 0.68, width: 220, height: 42, color: '#FF3B00' },
-      { id: 'storyboard', label: 'CINEMATIC STORYBOARD', sub: 'Phase 0 (4-Track Playhead)', x: 0.5, y: 0.80, width: 220, height: 40, color: '#FFFFFF' },
-      { id: 'worlds', label: '5 CREATIVE WORLDS', sub: 'Hyperthought · Horologist · Terra...', x: 0.5, y: 0.92, width: 240, height: 44, color: '#10B981' },
+      { id: 'curiosity', label: 'HUMAN CURIOSITY', sub: 'Existential Query', x: 0.5, y: 0.08, width: 160 * s, height: 40 * s, color: '#FFFFFF' },
+      { id: 'raw', label: 'RAW KNOWLEDGE', sub: 'Literature & Videos', x: 0.5, y: 0.20, width: 160 * s, height: 40 * s, color: '#ECE7DE' },
+      { id: 'kem', label: 'KEM / MYCIN', sub: 'CommonKADS P1–P6', x: 0.5, y: 0.32, width: 170 * s, height: 40 * s, color: '#C86432' },
+      { id: 'extract', label: '44 MODULAR SKILLS', sub: 'Google AI Studio', x: 0.5, y: 0.44, width: 180 * s, height: 40 * s, color: '#00E5FF' },
+      { id: 'tournament', label: 'TOURNAMENT', sub: 'Flash vs Pro', x: 0.5, y: 0.56, width: 180 * s, height: 40 * s, color: '#D4AF37' },
+      { id: 'champion', label: 'CHAMPION AI SKILL', sub: 'creative-web-development', x: 0.5, y: 0.68, width: 200 * s, height: 42 * s, color: '#FF3B00' },
+      { id: 'storyboard', label: 'STORYBOARD', sub: 'Phase 0 (4-Track)', x: 0.5, y: 0.80, width: 180 * s, height: 40 * s, color: '#FFFFFF' },
+      { id: 'worlds', label: '5 CREATIVE WORLDS', sub: 'Hyperthought · Horologist...', x: 0.5, y: 0.92, width: 200 * s, height: 44 * s, color: '#10B981' },
     ];
 
     this.edges = [
@@ -138,6 +141,10 @@ export class SystemDAGRenderer {
     });
 
     // Draw Nodes
+    const isMobile = window.innerWidth < 768;
+    const labelFont = isMobile ? '600 9px "Space Grotesk", sans-serif' : '600 11px "Space Grotesk", sans-serif';
+    const subFont = isMobile ? '7px "JetBrains Mono", monospace' : '9px "JetBrains Mono", monospace';
+
     this.nodes.forEach((n) => {
       const px = n.x * this.width;
       const py = n.y * this.height;
@@ -154,14 +161,14 @@ export class SystemDAGRenderer {
 
       // Label
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = '600 11px "Space Grotesk", sans-serif';
+      ctx.font = labelFont;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(n.label, 0, -5);
 
       // Subtitle
       ctx.fillStyle = '#8C92A0';
-      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.font = subFont;
       ctx.fillText(n.sub, 0, 8);
 
       ctx.restore();

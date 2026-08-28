@@ -3,6 +3,9 @@ import { soundEngine } from './core/audio';
 import { telemetry } from './core/telemetry';
 import { theaterEngine, PROVING_PROJECTS } from './components/FullCanvasTheater';
 
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 import { Act00_Prologue } from './acts/Act00_Prologue';
 import { Act01_Evidence } from './acts/Act01_Evidence';
 import { Act02_GoBack } from './acts/Act02_GoBack';
@@ -14,6 +17,8 @@ import { Act07_ProvingGround } from './acts/Act07_ProvingGround';
 import { Act08_BattleScars } from './acts/Act08_BattleScars';
 import { Act09_TheMachine } from './acts/Act09_TheMachine';
 import { Act10_OpenExperiment } from './acts/Act10_OpenExperiment';
+
+gsap.registerPlugin(ScrollTrigger);
 
 class ResilientDavinciApp {
   private act00 = new Act00_Prologue();
@@ -32,41 +37,40 @@ class ResilientDavinciApp {
   private lastProgressPct: string = '';
   private lastActName: string = '';
   private lastIsDarkMode: boolean = false;
-  private lastScrollSoundTime: number = 0;
+  private lastSectionIndex: number = -1;
 
   public async bootstrap(): Promise<void> {
-    // Invariant: Wait for all web font glyphs to load before calculating metrics
     await document.fonts.ready;
 
-    // Initialize master RAF clock and Lenis smooth scroll
     const lenis = masterTicker.init();
 
     // Mount all 11 Acts
-    const p00 = document.getElementById('prologue');
-    const p01 = document.getElementById('act-evidence');
-    const p02 = document.getElementById('act-goback');
-    const p03 = document.getElementById('act-extract');
-    const p04 = document.getElementById('act-five-machines');
-    const p05 = document.getElementById('act-tournament');
-    const p06 = document.getElementById('act-missing-piece');
-    const p07 = document.getElementById('act-proving-ground');
-    const p08 = document.getElementById('act-battle-scars');
-    const p09 = document.getElementById('act-the-machine');
-    const p10 = document.getElementById('act-open-experiment');
+    const sections = [
+      { id: 'prologue', act: this.act00 },
+      { id: 'act-evidence', act: this.act01 },
+      { id: 'act-goback', act: this.act02 },
+      { id: 'act-extract', act: this.act03 },
+      { id: 'act-five-machines', act: this.act04 },
+      { id: 'act-tournament', act: this.act05 },
+      { id: 'act-missing-piece', act: this.act06 },
+      { id: 'act-proving-ground', act: this.act07 },
+      { id: 'act-battle-scars', act: this.act08 },
+      { id: 'act-the-machine', act: this.act09 },
+      { id: 'act-open-experiment', act: this.act10 },
+    ];
 
-    if (p00) this.act00.init(p00);
-    if (p01) this.act01.init(p01);
-    if (p02) this.act02.init(p02);
-    if (p03) this.act03.init(p03);
-    if (p04) this.act04.init(p04);
-    if (p05) this.act05.init(p05);
-    if (p06) this.act06.init(p06);
-    if (p07) this.act07.init(p07);
-    if (p08) this.act08.init(p08);
-    if (p09) this.act09.init(p09);
-    if (p10) this.act10.init(p10);
+    sections.forEach(({ id, act }) => {
+      const el = document.getElementById(id);
+      if (el) act.init(el);
+    });
 
     this.setupGlobalControls(lenis);
+    this.setupScrollAnimations();
+
+    // Refresh ScrollTrigger positions after layout calculation
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
   }
 
   private setupGlobalControls(lenis: ReturnType<typeof masterTicker.init>): void {
@@ -99,7 +103,7 @@ class ResilientDavinciApp {
     });
 
     // Batched Scroll Progress & Section Spy (Zero DOM Churn)
-    lenis.on('scroll', ({ scroll, limit, velocity }: { scroll: number; limit: number; velocity: number }) => {
+    lenis.on('scroll', ({ scroll, limit }: { scroll: number; limit: number }) => {
       const progress = limit > 0 ? scroll / limit : 0;
       const pct = (progress * 100).toFixed(0);
 
@@ -112,38 +116,45 @@ class ResilientDavinciApp {
       // Determine active act based on scroll progress
       let currentActName = 'PROLOGUE';
       let isDarkSection = false;
+      let sectionIndex = 0;
 
       if (progress < 0.08) {
-        currentActName = 'PROLOGUE';
+        currentActName = 'PROLOGUE'; sectionIndex = 0;
       } else if (progress < 0.18) {
-        currentActName = 'CH.01 EVIDENCE';
+        currentActName = 'CH.01 EVIDENCE'; sectionIndex = 1;
       } else if (progress < 0.28) {
-        currentActName = 'CH.02 GO BACK (1984)';
+        currentActName = 'CH.02 GO BACK (1984)'; sectionIndex = 2;
       } else if (progress < 0.38) {
-        currentActName = 'CH.03 EXTRACT';
+        currentActName = 'CH.03 EXTRACT'; sectionIndex = 3;
         isDarkSection = true;
       } else if (progress < 0.50) {
-        currentActName = 'CH.04 FIVE MACHINES';
+        currentActName = 'CH.04 FIVE MACHINES'; sectionIndex = 4;
       } else if (progress < 0.62) {
-        currentActName = 'CH.05 TOURNAMENT';
+        currentActName = 'CH.05 TOURNAMENT'; sectionIndex = 5;
         isDarkSection = true;
       } else if (progress < 0.72) {
-        currentActName = 'CH.06 MISSING PIECE';
+        currentActName = 'CH.06 MISSING PIECE'; sectionIndex = 6;
       } else if (progress < 0.84) {
-        currentActName = 'CH.07 PROVING GROUND';
+        currentActName = 'CH.07 PROVING GROUND'; sectionIndex = 7;
         isDarkSection = true;
       } else if (progress < 0.92) {
-        currentActName = 'CH.08 BATTLE SCARS';
+        currentActName = 'CH.08 BATTLE SCARS'; sectionIndex = 8;
       } else if (progress < 0.97) {
-        currentActName = 'CH.09 THE MACHINE';
+        currentActName = 'CH.09 THE MACHINE'; sectionIndex = 9;
         isDarkSection = true;
       } else {
-        currentActName = 'FINAL ACT';
+        currentActName = 'FINAL ACT'; sectionIndex = 10;
       }
 
       if (currentActName !== this.lastActName) {
         this.lastActName = currentActName;
         hudActName.textContent = currentActName;
+      }
+
+      // Section transition sound (plays once per section change)
+      if (sectionIndex !== this.lastSectionIndex) {
+        this.lastSectionIndex = sectionIndex;
+        soundEngine.playSectionTransition(sectionIndex);
       }
 
       if (isDarkSection !== this.lastIsDarkMode) {
@@ -154,24 +165,195 @@ class ResilientDavinciApp {
           navEl.classList.remove('dark-mode');
         }
       }
-
-      // Throttled Audio on fast flick scrolling (max 1 chirp per 350ms)
-      const now = performance.now();
-      if (Math.abs(velocity) > 12 && now - this.lastScrollSoundTime > 350) {
-        this.lastScrollSoundTime = now;
-        soundEngine.playHoverChirp(320 + Math.min(600, Math.abs(velocity) * 15));
-      }
     });
 
-    // Nav Telemetry HUD Updates (Throttled)
+    // Nav Telemetry HUD (Throttled)
     setInterval(() => {
       navFps.textContent = `${telemetry.fps} FPS`;
       navDpr.textContent = `DPR ${telemetry.dpr.toFixed(1)}`;
     }, 500);
   }
+
+  /**
+   * GSAP ScrollTrigger entrance animations for every section.
+   * Uses once: true and clearProps so elements never get stuck invisible or interfere with interactions.
+   */
+  private setupScrollAnimations(): void {
+    const ease = 'power3.out';
+
+    // Helper for robust section trigger
+    const animateSection = (sectionId: string, animationFn: () => void) => {
+      ScrollTrigger.create({
+        trigger: sectionId,
+        start: 'top 85%',
+        once: true,
+        onEnter: animationFn,
+      });
+    };
+
+    // --- Prologue ---
+    animateSection('#prologue', () => {
+      gsap.fromTo('#prologue .prologue-hero-title', 
+        { y: 50, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 1.0, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#prologue .prologue-subtitle', 
+        { y: 25, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.2, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#prologue .prologue-typewriter-box', 
+        { y: 20, opacity: 0 }, 
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.4, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.01 Evidence ---
+    animateSection('#act-evidence', () => {
+      gsap.fromTo('#act-evidence .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-evidence .evidence-card',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.08, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-evidence .math-dissection-matrix',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.3, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.02 Go Back ---
+    animateSection('#act-goback', () => {
+      gsap.fromTo('#act-goback .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-goback .goback-timeline-strip',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-goback .pdf-cascade-container',
+        { x: -30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, delay: 0.25, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-goback .lanczos-compression-box',
+        { x: 30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, delay: 0.25, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-goback .goback-insights-section',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.35, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.03 Extract ---
+    animateSection('#act-extract', () => {
+      gsap.fromTo('#act-extract .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-extract .extract-flow-canvas-container',
+        { scale: 0.95, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.9, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-extract .probe-card',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, stagger: 0.06, delay: 0.25, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.04 Five Machines ---
+    animateSection('#act-five-machines', () => {
+      gsap.fromTo('#act-five-machines .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-five-machines .doorway-card',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.08, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.05 Tournament ---
+    animateSection('#act-tournament', () => {
+      gsap.fromTo('#act-tournament .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-tournament .tournament-bracket-wrapper',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.06 Missing Piece ---
+    animateSection('#act-missing-piece', () => {
+      gsap.fromTo('#act-missing-piece .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-missing-piece .timeline-track-row',
+        { x: -30, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, stagger: 0.1, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.07 Proving Ground ---
+    animateSection('#act-proving-ground', () => {
+      gsap.fromTo('#act-proving-ground .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-proving-ground .monolith-card',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.08, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.08 Battle Scars ---
+    animateSection('#act-battle-scars', () => {
+      gsap.fromTo('#act-battle-scars .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-battle-scars .scar-card',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Ch.09 The Machine ---
+    animateSection('#act-the-machine', () => {
+      gsap.fromTo('#act-the-machine .chapter-header',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-the-machine .dag-canvas-container',
+        { scale: 0.95, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.9, delay: 0.15, ease, clearProps: 'opacity,transform' }
+      );
+    });
+
+    // --- Final Act ---
+    animateSection('#act-open-experiment', () => {
+      gsap.fromTo('#act-open-experiment .experiment-final-question',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, ease, clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-open-experiment .experiment-final-answer',
+        { scale: 0.85, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.9, delay: 0.2, ease: 'back.out(1.4)', clearProps: 'opacity,transform' }
+      );
+      gsap.fromTo('#act-open-experiment .experiment-videos-container',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, delay: 0.35, ease, clearProps: 'opacity,transform' }
+      );
+    });
+  }
 }
 
-// Bootstrap Application on DOMContentLoaded
+// Bootstrap Application
 window.addEventListener('DOMContentLoaded', () => {
   const app = new ResilientDavinciApp();
   app.bootstrap().catch((err) => {

@@ -20,8 +20,39 @@ export class Act10_OpenExperiment {
       <h2 class="experiment-final-question">CAN A MACHINE LEARN TASTE?</h2>
       <div class="experiment-final-answer">WE DON'T KNOW YET.</div>
       <div class="experiment-final-epigraph">"BUT NOW WE HAVE A WAY TO FIND OUT."</div>
+      
+      <!-- Primary Action CTA -->
+      <div class="experiment-cta-row">
+        <a class="experiment-primary-cta" href="https://github.com/J-StaR-Films-Studios/VibeCode-Protocol-Suite/tree/main/assets/.agent/skills/frontend-ui/creative-web-development" target="_blank" rel="noopener noreferrer">
+          <span>TRY IT YOURSELF ↗</span>
+        </a>
+      </div>
 
-      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 16px;">
+      <!-- Video Documentaries Grid -->
+      <div class="experiment-videos-container">
+        <div class="video-card">
+          <div class="video-embed-wrapper">
+            <iframe src="https://www.youtube.com/embed/AUrc9VUKZLI" title="Watch: Creative Web Design" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="video-card-caption">
+            <span class="video-tag">[ ESSAY ]</span>
+            <span class="video-title">Why Most AI Web Designs Look Predictable</span>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-embed-wrapper">
+            <iframe src="https://www.youtube.com/embed/GXUFMqxGalQ" title="Watch: Building AI Skills" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+          </div>
+          <div class="video-card-caption">
+            <span class="video-tag">[ ARCHITECTURE ]</span>
+            <span class="video-title">Building 50+ Custom AI Skills & Knowledge Systems</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigational Reset Controls -->
+      <div class="experiment-nav-controls">
         <button class="theater-quick-launch" id="btn-restart-exp">
           <span>↺ RESTART EXHIBITION</span>
         </button>
@@ -30,12 +61,42 @@ export class Act10_OpenExperiment {
         </a>
       </div>
 
-      <div class="experiment-credits-box">
-        <div><strong>RESILIENT DAVINCI INTERACTIVE EXHIBITION</strong></div>
-        <div>Curated & Engineered with Gemini 3.7 Flash High Reasoning & Antigravity Systems Architecture</div>
-        <div>Provenance Ledger: Rule-Based Expert Systems (1984) · CommonKADS · 44 Modular Skills · 5 Proving Worlds</div>
-        <div style="color: var(--accent-terracotta); margin-top: 8px;">[ 05.2026 — LIVING INSTITUTION ]</div>
-      </div>
+      <!-- Unified Exhibition Colophon & Studio Credits -->
+      <footer class="exhibition-colophon-footer">
+        <div class="colophon-institution-name">RESILIENT DAVINCI INTERACTIVE EXHIBITION</div>
+        
+        <div class="colophon-studio-row">
+          <span>An original creative inquiry by</span>
+          <a class="colophon-studio-link" href="https://jstarstudios.com" target="_blank" rel="noopener noreferrer">
+            <strong>J StaR Films Studios</strong>
+          </a>
+        </div>
+
+        <div class="colophon-channels-row">
+          <a class="colophon-pill-link" href="https://jstarstudios.com" target="_blank" rel="noopener noreferrer">
+            <span>[ JSTARSTUDIOS.COM ↗ ]</span>
+          </a>
+          <a class="colophon-pill-link" href="https://www.youtube.com/jstarfilms" target="_blank" rel="noopener noreferrer">
+            <span>[ YOUTUBE @JSTARFILMS ↗ ]</span>
+          </a>
+          <a class="colophon-pill-link" href="https://github.com/J-StaR-Films-Studios/VibeCode-Protocol-Suite" target="_blank" rel="noopener noreferrer">
+            <span>[ VIBECODE PROTOCOL ↗ ]</span>
+          </a>
+        </div>
+
+        <div class="colophon-metadata">
+          <div>Curated & Engineered with Gemini 3.7 Flash High Reasoning & Antigravity Systems Architecture</div>
+          <div>Provenance: Rule-Based Expert Systems (1984) · CommonKADS · 44 Modular Skills · 5 Proving Worlds</div>
+        </div>
+
+        <div class="colophon-stamp-row">
+          <span class="colophon-stamp">[ 05.2026 — LIVING INSTITUTION ]</span>
+          <span class="colophon-dot">·</span>
+          <a class="colophon-domain" href="https://design.jstarstudios.com">design.jstarstudios.com</a>
+          <span class="colophon-dot">·</span>
+          <span>© 2026 J StaR Films Studios. All rights reserved.</span>
+        </div>
+      </footer>
     `;
 
     this.setupListeners();

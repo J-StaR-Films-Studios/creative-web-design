@@ -143,10 +143,12 @@ export class FullCanvasTheaterEngine {
 
         <div class="theater-hud-right">
           <button class="theater-action-btn" id="theater-pain-btn">
-            <span>[ THE PAIN BEHIND THIS ]</span>
+            <span class="pain-btn-full">[ THE PAIN BEHIND THIS ]</span>
+            <span class="pain-btn-short">[ CRUCIBLE ]</span>
           </button>
           <button class="theater-action-btn primary" id="theater-close-btn">
-            <span>[ ESC ] RETURN</span>
+            <span class="close-btn-full">[ ESC ] RETURN</span>
+            <span class="close-btn-short">✕ CLOSE</span>
           </button>
         </div>
       </div>
@@ -241,8 +243,17 @@ export class FullCanvasTheaterEngine {
   }
 
   public launch(project: ProjectMetadata): void {
+    // Mobile Safety Guard: Don't load heavy iframes on mobile GPUs
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      window.open(project.path, '_blank');
+      return;
+    }
+
     this.activeProject = project;
     this.titleEl.textContent = `${project.id} / ${project.name}`;
+
+    // Lazy iframe loading: only set src when theater is opened
     this.iframeEl.src = project.path;
 
     // Update Drawer Content
@@ -265,6 +276,15 @@ export class FullCanvasTheaterEngine {
     this.overlayEl.classList.add('active');
     document.body.style.overflow = 'hidden';
     soundEngine.playHarmonicChord();
+
+    // Iframe load timeout safety
+    const loadTimeout = setTimeout(() => {
+      if (this.iframeEl.src !== 'about:blank') {
+        console.warn('Theater iframe load timeout — proving world may be slow');
+      }
+    }, 8000);
+
+    this.iframeEl.addEventListener('load', () => clearTimeout(loadTimeout), { once: true });
 
     // Start Telemetry HUD updates
     if (this.telemetryInterval) clearInterval(this.telemetryInterval);

@@ -255,15 +255,62 @@
   overflow-x: auto;
 }
 
+.theater-action-btn .pain-btn-short,
+.theater-action-btn .close-btn-short {
+  display: none;
+}
+
+.theater-action-btn .pain-btn-full,
+.theater-action-btn .close-btn-full {
+  display: inline;
+}
+
 /* Mobile Media Queries for Theater */
 @media (max-width: 768px) {
   .theater-hud-header {
     height: 48px;
-    padding: 0 12px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
   }
 
   .theater-hud-center {
     display: none;
+  }
+
+  .theater-hud-tag {
+    display: none;
+  }
+
+  .theater-hud-title {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+  }
+
+  .theater-hud-right {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .theater-action-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .theater-action-btn .pain-btn-full,
+  .theater-action-btn .close-btn-full {
+    display: none;
+  }
+
+  .theater-action-btn .pain-btn-short,
+  .theater-action-btn .close-btn-short {
+    display: inline;
   }
 
   .theater-bottom-dock {

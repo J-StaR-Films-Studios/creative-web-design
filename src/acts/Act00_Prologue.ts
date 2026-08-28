@@ -83,7 +83,7 @@ export class Act00_Prologue {
       if (index < text1.length) {
         this.typewriterEl.textContent += text1.charAt(index);
         index++;
-        if (index % 4 === 0) soundEngine.playHoverChirp(720 + index * 2);
+        if (index % 4 === 0) soundEngine.playSubtleTick();
         setTimeout(typeFirstPart, 30);
       } else {
         setTimeout(() => {
@@ -92,7 +92,7 @@ export class Act00_Prologue {
             if (index2 < text2.length) {
               this.typewriterEl.textContent += text2.charAt(index2);
               index2++;
-              if (index2 % 4 === 0) soundEngine.playHoverChirp(680 + index2 * 3);
+              if (index2 % 4 === 0) soundEngine.playSubtleTick();
               setTimeout(typeSecondPart, 30);
             } else {
               const span = document.createElement('span');
