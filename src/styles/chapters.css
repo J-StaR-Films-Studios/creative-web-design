@@ -919,3 +919,107 @@
   flex-direction: column;
   gap: 8px;
 }
+
+/* Mobile Media Queries for Chapters */
+@media (max-width: 768px) {
+  .prologue-typewriter-box {
+    padding-left: 14px;
+    min-height: 80px;
+    font-size: 1.15rem;
+  }
+
+  .math-dissection-matrix {
+    padding: 16px;
+  }
+
+  .dissection-tabs {
+    gap: 8px;
+  }
+
+  .dissection-tab-btn {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+
+  .dissection-formula {
+    font-size: 12px;
+    padding: 14px;
+  }
+
+  .pdf-cascade-container {
+    height: 280px;
+    padding: 10px;
+  }
+
+  .pdf-cascade-card {
+    width: 140px;
+    height: 190px;
+    font-size: 8px;
+    padding: 8px;
+  }
+
+  .lanczos-compression-box {
+    padding: 16px;
+  }
+
+  .extract-flow-canvas-container {
+    height: 280px;
+  }
+
+  .commonkads-probes-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .probe-card {
+    padding: 12px;
+  }
+
+  .tournament-bracket-wrapper {
+    padding: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .bracket-stages-row {
+    min-width: 650px;
+    gap: 16px;
+  }
+
+  .timeline-track-row {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .track-visual-bar {
+    flex-wrap: wrap;
+  }
+
+  .track-phase-segment {
+    padding: 6px 10px;
+    font-size: 10px;
+  }
+
+  .monolith-card {
+    min-height: 280px;
+    padding: 18px;
+  }
+
+  .monolith-name {
+    font-size: 20px;
+  }
+
+  .dag-canvas-container {
+    height: 360px;
+  }
+
+  .act-open-experiment {
+    padding: 80px 16px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .commonkads-probes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

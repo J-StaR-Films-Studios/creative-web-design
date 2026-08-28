@@ -4,6 +4,9 @@ import { soundEngine } from '../core/audio';
 export class Act01_Evidence {
   private containerEl!: HTMLElement;
   public currentTab: string = 'spring';
+  private observer!: IntersectionObserver;
+  private autoCycleIndex: number = 0;
+  private autoCycleTimer: number | null = null;
 
   public getCurrentTab(): string {
     return this.currentTab;
@@ -27,8 +30,8 @@ export class Act01_Evidence {
       </div>
 
       <!-- 5 Architectural Evidence Cards -->
-      <div class="evidence-table-grid">
-        <div class="evidence-card" data-ref="huyml">
+      <div class="evidence-table-grid" id="evidence-cards-grid">
+        <div class="evidence-card active" data-ref="huyml" data-tab-target="spring">
           <div>
             <div class="evidence-ref">[ REF. 01 / HUYML ]</div>
             <div class="evidence-name">Kinetic Typography</div>
@@ -37,7 +40,7 @@ export class Act01_Evidence {
           <div class="evidence-math-preview">f(t) = rotX(sin(t) * 90deg)</div>
         </div>
 
-        <div class="evidence-card" data-ref="bunq">
+        <div class="evidence-card" data-ref="bunq" data-tab-target="noise">
           <div>
             <div class="evidence-ref">[ REF. 02 / BUNQ LABS ]</div>
             <div class="evidence-name">Fluid GPU Distortion</div>
@@ -46,7 +49,7 @@ export class Act01_Evidence {
           <div class="evidence-math-preview">uVelocity = (p_t - p_t-1) / dt</div>
         </div>
 
-        <div class="evidence-card" data-ref="butter">
+        <div class="evidence-card" data-ref="butter" data-tab-target="cover">
           <div>
             <div class="evidence-ref">[ REF. 03 / BUTTER ]</div>
             <div class="evidence-name">Frame Scrubbing</div>
@@ -55,7 +58,7 @@ export class Act01_Evidence {
           <div class="evidence-math-preview">frame = floor(p * totalFrames)</div>
         </div>
 
-        <div class="evidence-card" data-ref="superlocal">
+        <div class="evidence-card" data-ref="superlocal" data-tab-target="cover">
           <div>
             <div class="evidence-ref">[ REF. 04 / SUPERLOCAL ]</div>
             <div class="evidence-name">3D Spatial Tracking</div>
@@ -64,7 +67,7 @@ export class Act01_Evidence {
           <div class="evidence-math-preview">FOV = 2*atan(Sensor/2F)*180/π</div>
         </div>
 
-        <div class="evidence-card" data-ref="oryzo">
+        <div class="evidence-card" data-ref="oryzo" data-tab-target="luminance">
           <div>
             <div class="evidence-ref">[ REF. 05 / ORYZO ]</div>
             <div class="evidence-name">Hybrid Baked Pipeline</div>
@@ -95,6 +98,7 @@ export class Act01_Evidence {
 
     this.setupListeners();
     this.renderTabContent('spring');
+    this.setupScrollTrigger();
   }
 
   private setupListeners(): void {
@@ -112,10 +116,67 @@ export class Act01_Evidence {
 
     const cards = this.containerEl.querySelectorAll('.evidence-card');
     cards.forEach((card) => {
-      card.addEventListener('mouseenter', () => {
-        soundEngine.playHoverChirp(780);
-      });
+      // Hover and Mobile Tap Support
+      const activateCard = () => {
+        cards.forEach((c) => c.classList.remove('active'));
+        card.classList.add('active');
+        const targetTab = card.getAttribute('data-tab-target');
+        if (targetTab && targetTab !== this.currentTab) {
+          this.currentTab = targetTab;
+          tabButtons.forEach((b) => {
+            if (b.getAttribute('data-tab') === targetTab) b.classList.add('active');
+            else b.classList.remove('active');
+          });
+          this.renderTabContent(targetTab);
+        }
+        soundEngine.playHoverChirp(720);
+      };
+
+      card.addEventListener('mouseenter', activateCard);
+      card.addEventListener('click', activateCard);
     });
+  }
+
+  private setupScrollTrigger(): void {
+    const cards = this.containerEl.querySelectorAll('.evidence-card');
+    const tabs = ['spring', 'noise', 'cover', 'cover', 'luminance'];
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Auto-cycle through evidence cards gently on mobile view
+            if (!this.autoCycleTimer && window.innerWidth < 768) {
+              this.autoCycleTimer = window.setInterval(() => {
+                this.autoCycleIndex = (this.autoCycleIndex + 1) % cards.length;
+                cards.forEach((c, idx) => {
+                  if (idx === this.autoCycleIndex) c.classList.add('active');
+                  else c.classList.remove('active');
+                });
+                const tab = tabs[this.autoCycleIndex];
+                if (tab && tab !== this.currentTab) {
+                  this.currentTab = tab;
+                  const tabButtons = this.containerEl.querySelectorAll('.dissection-tab-btn');
+                  tabButtons.forEach((b) => {
+                    if (b.getAttribute('data-tab') === tab) b.classList.add('active');
+                    else b.classList.remove('active');
+                  });
+                  this.renderTabContent(tab);
+                }
+              }, 3200);
+            }
+          } else {
+            if (this.autoCycleTimer) {
+              clearInterval(this.autoCycleTimer);
+              this.autoCycleTimer = null;
+            }
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    this.observer.observe(this.containerEl);
   }
 
   private renderTabContent(tab: string): void {

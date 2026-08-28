@@ -28,6 +28,12 @@ class ResilientDavinciApp {
   private act09 = new Act09_TheMachine();
   private act10 = new Act10_OpenExperiment();
 
+  // Scroll State Cache for Zero-DOM-churn batching
+  private lastProgressPct: string = '';
+  private lastActName: string = '';
+  private lastIsDarkMode: boolean = false;
+  private lastScrollSoundTime: number = 0;
+
   public async bootstrap(): Promise<void> {
     // Invariant: Wait for all web font glyphs to load before calculating metrics
     await document.fonts.ready;
@@ -92,13 +98,16 @@ class ResilientDavinciApp {
       theaterEngine.launch(PROVING_PROJECTS[0]);
     });
 
-    // Scroll Progress & Section Spy
+    // Batched Scroll Progress & Section Spy (Zero DOM Churn)
     lenis.on('scroll', ({ scroll, limit, velocity }: { scroll: number; limit: number; velocity: number }) => {
       const progress = limit > 0 ? scroll / limit : 0;
-      const pct = (progress * 100).toFixed(1);
+      const pct = (progress * 100).toFixed(0);
 
-      progressBar.style.width = `${pct}%`;
-      hudScrollPct.textContent = `SCROLL: ${pct}%`;
+      if (pct !== this.lastProgressPct) {
+        this.lastProgressPct = pct;
+        progressBar.style.width = `${pct}%`;
+        hudScrollPct.textContent = `SCROLL: ${pct}%`;
+      }
 
       // Determine active act based on scroll progress
       let currentActName = 'PROLOGUE';
@@ -132,26 +141,33 @@ class ResilientDavinciApp {
         currentActName = 'FINAL ACT';
       }
 
-      hudActName.textContent = currentActName;
-
-      // Nav Dark Mode Toggle
-      if (isDarkSection) {
-        navEl.classList.add('dark-mode');
-      } else {
-        navEl.classList.remove('dark-mode');
+      if (currentActName !== this.lastActName) {
+        this.lastActName = currentActName;
+        hudActName.textContent = currentActName;
       }
 
-      // Audio subtle velocity modulation on fast scrolls
-      if (Math.abs(velocity) > 8) {
-        soundEngine.playHoverChirp(300 + Math.min(800, Math.abs(velocity) * 20));
+      if (isDarkSection !== this.lastIsDarkMode) {
+        this.lastIsDarkMode = isDarkSection;
+        if (isDarkSection) {
+          navEl.classList.add('dark-mode');
+        } else {
+          navEl.classList.remove('dark-mode');
+        }
+      }
+
+      // Throttled Audio on fast flick scrolling (max 1 chirp per 350ms)
+      const now = performance.now();
+      if (Math.abs(velocity) > 12 && now - this.lastScrollSoundTime > 350) {
+        this.lastScrollSoundTime = now;
+        soundEngine.playHoverChirp(320 + Math.min(600, Math.abs(velocity) * 15));
       }
     });
 
-    // Nav Telemetry HUD Updates
+    // Nav Telemetry HUD Updates (Throttled)
     setInterval(() => {
       navFps.textContent = `${telemetry.fps} FPS`;
       navDpr.textContent = `DPR ${telemetry.dpr.toFixed(1)}`;
-    }, 400);
+    }, 500);
   }
 }
 

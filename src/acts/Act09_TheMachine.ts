@@ -7,6 +7,8 @@ export class Act09_TheMachine {
   private canvasEl!: HTMLCanvasElement;
   private dagRenderer!: SystemDAGRenderer;
   private isContracted: boolean = false;
+  private isVisible: boolean = false;
+  private observer!: IntersectionObserver;
 
   public init(container: HTMLElement): void {
     this.containerEl = container;
@@ -44,8 +46,21 @@ export class Act09_TheMachine {
     this.canvasEl = this.containerEl.querySelector('#dag-canvas')!;
     this.dagRenderer = new SystemDAGRenderer(this.canvasEl);
 
+    // Viewport Culling Observer
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          this.isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.05 }
+    );
+    this.observer.observe(this.containerEl);
+
     masterTicker.register((time) => {
-      this.dagRenderer.update(time);
+      if (this.isVisible) {
+        this.dagRenderer.update(time);
+      }
     });
 
     this.setupListeners();

@@ -9,6 +9,7 @@ export class Act00_Prologue {
   private typewriterEl!: HTMLElement;
   private strikeEl!: HTMLElement;
   private hasExploded: boolean = false;
+  private observer!: IntersectionObserver;
 
   public init(container: HTMLElement): void {
     this.containerEl = container;
@@ -45,10 +46,26 @@ export class Act00_Prologue {
 
     this.simulation = new CardHeapSimulation(this.canvasEl);
 
+    // Viewport Culling Observer
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          this.simulation.isVisible = entry.isIntersecting;
+          if (entry.isIntersecting) {
+            this.simulation.isSleeping = false;
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+    this.observer.observe(this.containerEl);
+
     // Register render loop in master ticker
     masterTicker.register(() => {
-      this.simulation.update();
-      this.simulation.render();
+      if (this.simulation.isVisible && !this.simulation.isSleeping) {
+        this.simulation.update();
+        this.simulation.render();
+      }
     });
 
     this.startTypewriterSequence();
@@ -66,37 +83,34 @@ export class Act00_Prologue {
       if (index < text1.length) {
         this.typewriterEl.textContent += text1.charAt(index);
         index++;
-        soundEngine.playHoverChirp(720 + index * 4);
-        setTimeout(typeFirstPart, 35);
+        if (index % 4 === 0) soundEngine.playHoverChirp(720 + index * 2);
+        setTimeout(typeFirstPart, 30);
       } else {
-        // Pause between sentences
         setTimeout(() => {
           let index2 = 0;
           const typeSecondPart = () => {
             if (index2 < text2.length) {
               this.typewriterEl.textContent += text2.charAt(index2);
               index2++;
-              soundEngine.playHoverChirp(680 + index2 * 6);
-              setTimeout(typeSecondPart, 35);
+              if (index2 % 4 === 0) soundEngine.playHoverChirp(680 + index2 * 3);
+              setTimeout(typeSecondPart, 30);
             } else {
-              // Append strike phrase with emphasis
               const span = document.createElement('span');
               span.className = 'strike-word';
               span.textContent = strikePhrase;
               this.typewriterEl.appendChild(span);
 
-              // Trigger card explosion
               setTimeout(() => {
                 this.triggerExplosion();
               }, 400);
             }
           };
           typeSecondPart();
-        }, 600);
+        }, 500);
       }
     };
 
-    setTimeout(typeFirstPart, 400);
+    setTimeout(typeFirstPart, 300);
   }
 
   public triggerExplosion(): void {
@@ -116,9 +130,8 @@ export class Act00_Prologue {
 
     soundEngine.playHarmonicChord();
 
-    // Reveal final typographic strike
     setTimeout(() => {
       this.strikeEl.classList.add('visible');
-    }, 1200);
+    }, 1000);
   }
 }

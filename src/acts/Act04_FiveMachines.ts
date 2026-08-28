@@ -16,6 +16,8 @@ export class Act04_FiveMachines {
   private terraEngine?: TerraMicroEngine;
   private voidEngine?: VoidMicroEngine;
   private archiveEngine?: ArchiveMicroEngine;
+  private isVisible: boolean = false;
+  private observer!: IntersectionObserver;
 
   public init(container: HTMLElement): void {
     this.containerEl = container;
@@ -104,6 +106,17 @@ export class Act04_FiveMachines {
 
     this.initMicroEngines();
     this.setupListeners();
+
+    // Viewport Culling Observer: Only compute and render when Act 04 is in view
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          this.isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.05 }
+    );
+    this.observer.observe(this.containerEl);
   }
 
   private initMicroEngines(): void {
@@ -120,6 +133,7 @@ export class Act04_FiveMachines {
     if (c5) this.archiveEngine = new ArchiveMicroEngine(c5);
 
     masterTicker.register((time) => {
+      if (!this.isVisible) return; // Zero GPU / CPU cycles when offscreen
       if (this.hyperEngine) this.hyperEngine.update(time);
       if (this.horoEngine) this.horoEngine.update(time);
       if (this.terraEngine) this.terraEngine.update(time);

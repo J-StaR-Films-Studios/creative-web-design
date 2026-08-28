@@ -218,6 +218,18 @@ export class TerraMicroEngine {
       this.mouseY = e.clientY - rect.top;
       soundEngine.playHoverChirp(520);
     });
+
+    this.canvas.addEventListener(
+      'touchmove',
+      (e) => {
+        if (e.touches.length > 0) {
+          const rect = this.canvas.getBoundingClientRect();
+          this.mouseX = e.touches[0].clientX - rect.left;
+          this.mouseY = e.touches[0].clientY - rect.top;
+        }
+      },
+      { passive: true }
+    );
   }
 
   public update(time: number): void {
@@ -225,7 +237,11 @@ export class TerraMicroEngine {
     ctx.clearRect(0, 0, this.width, this.height);
 
     const sec = time * 0.001;
-    const lines = 12;
+    const lines = 10;
+
+    // Center orbit when mouse is idle
+    const targetX = this.mouseX > 0 ? this.mouseX : this.width / 2 + Math.cos(sec * 0.8) * 40;
+    const targetY = this.mouseY > 0 ? this.mouseY : this.height / 2 + Math.sin(sec * 0.8) * 25;
 
     ctx.strokeStyle = '#C86432'; // Terracotta Ochre
     ctx.lineWidth = 1;
@@ -240,8 +256,8 @@ export class TerraMicroEngine {
 
         // Topographic Simplex-like noise ripple
         const noise = Math.sin(theta * 3 + sec * 1.5) * 6 + Math.cos(l * 0.5 + theta * 2) * 4;
-        const x = this.mouseX + Math.cos(theta) * (baseRadius + noise);
-        const y = this.mouseY + Math.sin(theta) * (baseRadius + noise);
+        const x = targetX + Math.cos(theta) * (baseRadius + noise);
+        const y = targetY + Math.sin(theta) * (baseRadius + noise);
 
         if (p === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);

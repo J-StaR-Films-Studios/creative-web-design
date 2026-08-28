@@ -9,6 +9,8 @@ export class Act03_Extract {
   private width: number = 800;
   private height: number = 380;
   private dpr: number = Math.min(window.devicePixelRatio || 1, 2.0);
+  private isVisible: boolean = false;
+  private observer!: IntersectionObserver;
 
   public init(container: HTMLElement): void {
     this.containerEl = container;
@@ -34,7 +36,7 @@ export class Act03_Extract {
 
       <!-- CommonKADS P1–P6 Probes -->
       <div class="commonkads-probes-grid">
-        <div class="probe-card" data-probe="p1">
+        <div class="probe-card active" data-probe="p1">
           <div class="probe-id">[ P1 ]</div>
           <div class="probe-name">Conditions</div>
           <div class="probe-desc">When should this technique be triggered vs standard DOM layout?</div>
@@ -78,8 +80,21 @@ export class Act03_Extract {
     this.initCanvasParticles();
     this.setupListeners();
 
+    // Viewport Culling
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          this.isVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.05 }
+    );
+    this.observer.observe(this.containerEl);
+
     masterTicker.register((time) => {
-      this.updateAndRender(time);
+      if (this.isVisible) {
+        this.updateAndRender(time);
+      }
     });
   }
 
@@ -93,7 +108,8 @@ export class Act03_Extract {
     this.canvasEl.height = Math.floor(this.height * this.dpr);
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
 
-    const skills = [
+    const isMobile = window.innerWidth < 768;
+    const allSkills = [
       'GSAP 3', 'Lenis', 'ScrollTrigger', 'WebGL', 'GLSL', 'Three.js', 'Simplex Noise',
       'FBM Shaders', 'Hooke Spring', 'SplitText', 'Canvas 2D', 'Byte Stride', 'BT.601 Lum',
       'Frame Scrubber', 'Barba.js', 'Web Audio', 'DPR Clamp', 'InstancedMesh', 'Cover UV',
@@ -104,6 +120,9 @@ export class Act03_Extract {
       'CommonKADS P6', 'Certainty CF', 'Elicitation', 'Skill Compiler'
     ];
 
+    // Mobile Stride: Use half the nodes on small screens
+    const skills = isMobile ? allSkills.slice(0, 20) : allSkills;
+
     this.nodes = skills.map((label) => {
       const x = Math.random() * (this.width - 120) + 60;
       const y = Math.random() * (this.height - 60) + 30;
@@ -111,8 +130,8 @@ export class Act03_Extract {
         label,
         x,
         y,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
         origX: x,
         origY: y,
       };
@@ -132,11 +151,14 @@ export class Act03_Extract {
 
     const probeCards = this.containerEl.querySelectorAll('.probe-card');
     probeCards.forEach((card) => {
-      card.addEventListener('mouseenter', () => {
+      const activateProbe = () => {
         probeCards.forEach((c) => c.classList.remove('active'));
         card.classList.add('active');
         soundEngine.playHoverChirp(650);
-      });
+      };
+
+      card.addEventListener('mouseenter', activateProbe);
+      card.addEventListener('click', activateProbe);
     });
   }
 
@@ -148,14 +170,14 @@ export class Act03_Extract {
     const centerX = this.width / 2;
     const centerY = this.height / 2;
 
-    // Draw Central Compiler Core
+    // Central Compiler Core
     ctx.strokeStyle = '#00E5FF';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 32 + Math.sin(sec * 3) * 4, 0, Math.PI * 2);
+    ctx.arc(centerX, centerY, 30 + Math.sin(sec * 3) * 3, 0, Math.PI * 2);
     ctx.stroke();
 
-    ctx.fillStyle = 'rgba(0, 229, 255, 0.1)';
+    ctx.fillStyle = 'rgba(0, 229, 255, 0.08)';
     ctx.fill();
 
     ctx.fillStyle = '#FFFFFF';
@@ -169,13 +191,12 @@ export class Act03_Extract {
     for (let i = 0; i < this.nodes.length; i++) {
       const n = this.nodes[i];
 
-      // Slight gravitational pull towards core
       const dx = centerX - n.x;
       const dy = centerY - n.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      n.vx += (dx / dist) * 0.02;
-      n.vy += (dy / dist) * 0.02;
+      n.vx += (dx / dist) * 0.015;
+      n.vy += (dy / dist) * 0.015;
 
       n.vx *= 0.98;
       n.vy *= 0.98;
@@ -183,15 +204,13 @@ export class Act03_Extract {
       n.x += n.vx;
       n.y += n.vy;
 
-      // Keep inside bounds
-      if (n.x < 40) n.x = this.width - 40;
-      if (n.x > this.width - 40) n.x = 40;
+      if (n.x < 30) n.x = this.width - 30;
+      if (n.x > this.width - 30) n.x = 30;
       if (n.y < 20) n.y = this.height - 20;
       if (n.y > this.height - 20) n.y = 20;
 
-      // Draw connecting vector flow lines if within range
-      if (dist < 180) {
-        ctx.strokeStyle = `rgba(0, 229, 255, ${(1 - dist / 180) * 0.3})`;
+      if (dist < 160) {
+        ctx.strokeStyle = `rgba(0, 229, 255, ${(1 - dist / 160) * 0.25})`;
         ctx.lineWidth = 0.8;
         ctx.beginPath();
         ctx.moveTo(n.x, n.y);
@@ -199,14 +218,13 @@ export class Act03_Extract {
         ctx.stroke();
       }
 
-      // Draw Skill Node Pill
       ctx.fillStyle = '#181C24';
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
       ctx.lineWidth = 1;
 
       const textWidth = ctx.measureText(n.label).width;
-      const pw = textWidth + 12;
-      const ph = 16;
+      const pw = textWidth + 10;
+      const ph = 15;
 
       ctx.fillRect(n.x - pw / 2, n.y - ph / 2, pw, ph);
       ctx.strokeRect(n.x - pw / 2, n.y - ph / 2, pw, ph);

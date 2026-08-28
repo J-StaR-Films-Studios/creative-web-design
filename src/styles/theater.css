@@ -36,12 +36,12 @@
 .theater-hud-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .theater-hud-title {
   font-family: var(--font-serif);
-  font-size: 15px;
+  font-size: clamp(12px, 1.5vw, 15px);
   letter-spacing: 0.1em;
   color: #FFFFFF;
   font-weight: 600;
@@ -50,8 +50,8 @@
 
 .theater-hud-tag {
   font-family: var(--font-mono);
-  font-size: 10px;
-  padding: 2px 8px;
+  font-size: 9px;
+  padding: 2px 6px;
   border-radius: 2px;
   background: rgba(255, 59, 0, 0.15);
   color: var(--accent-vermillion);
@@ -61,7 +61,7 @@
 .theater-hud-center {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   font-family: var(--font-mono);
   font-size: 11px;
   color: #8C92A0;
@@ -81,14 +81,14 @@
 .theater-hud-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .theater-action-btn {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: clamp(10px, 1.2vw, 11px);
   letter-spacing: 0.05em;
-  padding: 6px 14px;
+  padding: 6px 12px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: transparent;
   color: #FFFFFF;
@@ -98,6 +98,7 @@
   gap: 6px;
   transition: all 0.2s;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .theater-action-btn:hover {
@@ -142,6 +143,8 @@
   gap: 8px;
   padding: 0 16px;
   z-index: 100;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dock-item-btn {
@@ -157,6 +160,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .dock-item-btn:hover, .dock-item-btn.active {
@@ -209,8 +214,8 @@
   border: none;
   color: #8C92A0;
   cursor: pointer;
-  font-size: 18px;
-  padding: 4px;
+  font-size: 22px;
+  padding: 8px;
 }
 
 .drawer-close-btn:hover {
@@ -248,4 +253,31 @@
   border-radius: 4px;
   color: #7EE787;
   overflow-x: auto;
+}
+
+/* Mobile Media Queries for Theater */
+@media (max-width: 768px) {
+  .theater-hud-header {
+    height: 48px;
+    padding: 0 12px;
+  }
+
+  .theater-hud-center {
+    display: none;
+  }
+
+  .theater-bottom-dock {
+    justify-content: flex-start;
+    padding: 0 8px;
+  }
+
+  .theater-drawer {
+    top: 48px;
+    width: 100vw;
+    padding: 20px;
+  }
+
+  .theater-stage-container {
+    height: calc(100vh - 48px - 44px);
+  }
 }

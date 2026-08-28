@@ -2,6 +2,7 @@ import { soundEngine } from '../core/audio';
 
 export class Act05_Tournament {
   private containerEl!: HTMLElement;
+  private observer!: IntersectionObserver;
 
   public init(container: HTMLElement): void {
     this.containerEl = container;
@@ -24,7 +25,7 @@ export class Act05_Tournament {
       <div class="tournament-bracket-wrapper">
         <div class="bracket-stages-row">
           <!-- Stage 1: Blind Synthesis -->
-          <div class="bracket-stage-col">
+          <div class="bracket-stage-col" data-stage="1">
             <div class="stage-header-title">STAGE 1: 5 BLIND CANDIDATES</div>
 
             <div class="candidate-node" data-cand="c1">
@@ -59,7 +60,7 @@ export class Act05_Tournament {
           </div>
 
           <!-- Stage 2: Dual Consolidation -->
-          <div class="bracket-stage-col">
+          <div class="bracket-stage-col" data-stage="2">
             <div class="stage-header-title">STAGE 2: CONSOLIDATION</div>
 
             <div class="candidate-node" style="margin-top: 40px;" data-cand="f1">
@@ -76,7 +77,7 @@ export class Act05_Tournament {
           </div>
 
           <!-- Stage 3: Grand Finals -->
-          <div class="bracket-stage-col">
+          <div class="bracket-stage-col" data-stage="3">
             <div class="stage-header-title">STAGE 3: CROWNED CHAMPION</div>
 
             <div class="candidate-node champion" style="margin-top: 70px;" data-cand="champ">
@@ -97,14 +98,43 @@ export class Act05_Tournament {
     `;
 
     this.setupListeners();
+    this.setupScrollTrigger();
   }
 
   private setupListeners(): void {
     const nodes = this.containerEl.querySelectorAll('.candidate-node');
     nodes.forEach((node) => {
-      node.addEventListener('mouseenter', () => {
+      const activate = () => {
         soundEngine.playHoverChirp(800);
-      });
+      };
+      node.addEventListener('mouseenter', activate);
+      node.addEventListener('click', activate);
     });
+  }
+
+  private setupScrollTrigger(): void {
+    const nodes = this.containerEl.querySelectorAll('.candidate-node');
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            nodes.forEach((node, idx) => {
+              setTimeout(() => {
+                (node as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                setTimeout(() => {
+                  if (!node.classList.contains('champion')) {
+                    (node as HTMLElement).style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                  }
+                }, 400);
+              }, idx * 100);
+            });
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    this.observer.observe(this.containerEl);
   }
 }

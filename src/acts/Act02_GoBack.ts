@@ -2,6 +2,7 @@ import { soundEngine } from '../core/audio';
 
 export class Act02_GoBack {
   private containerEl!: HTMLElement;
+  private observer!: IntersectionObserver;
 
   public init(container: HTMLElement): void {
     this.containerEl = container;
@@ -33,10 +34,10 @@ export class Act02_GoBack {
           ${Array.from({ length: 8 })
             .map((_, i) => {
               const rot = (i - 4) * 3;
-              const top = 30 + i * 16;
-              const left = 40 + i * 28;
+              const top = 25 + i * 14;
+              const left = Math.min(window.innerWidth < 600 ? 15 + i * 16 : 35 + i * 26, 240);
               return `
-              <div class="pdf-cascade-card" style="top: ${top}px; left: ${left}px; transform: rotate(${rot}deg); z-index: ${i + 1};">
+              <div class="pdf-cascade-card" data-card-idx="${i}" style="top: ${top}px; left: ${left}px; transform: rotate(${rot}deg); z-index: ${i + 1};">
                 <div>
                   <strong style="color: var(--accent-terracotta);">CHAPTER 0${i + 1}</strong>
                   <div style="font-size: 8px; color: #7A6F62; margin-top: 4px;">Buchanan & Shortliffe (1984)</div>
@@ -92,19 +93,52 @@ export class Act02_GoBack {
     `;
 
     this.setupListeners();
+    this.setupScrollTrigger();
   }
 
   private setupListeners(): void {
     const cards = this.containerEl.querySelectorAll('.pdf-cascade-card');
     cards.forEach((card, index) => {
-      card.addEventListener('mouseenter', () => {
-        (card as HTMLElement).style.transform = `translateY(-18px) scale(1.05)`;
-        soundEngine.playHoverChirp(500 + index * 40);
-      });
-      card.addEventListener('mouseleave', () => {
+      const activateCard = () => {
+        (card as HTMLElement).style.transform = `translateY(-16px) scale(1.04)`;
+        soundEngine.playHoverChirp(500 + index * 35);
+      };
+
+      const resetCard = () => {
         const rot = (index - 4) * 3;
         (card as HTMLElement).style.transform = `rotate(${rot}deg)`;
-      });
+      };
+
+      card.addEventListener('mouseenter', activateCard);
+      card.addEventListener('mouseleave', resetCard);
+      card.addEventListener('click', activateCard);
     });
+  }
+
+  private setupScrollTrigger(): void {
+    const cards = this.containerEl.querySelectorAll('.pdf-cascade-card');
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Cascade card pop animation on scroll into view
+            cards.forEach((card, idx) => {
+              setTimeout(() => {
+                (card as HTMLElement).style.transition = 'all 0.4s var(--ease-out-expo)';
+                (card as HTMLElement).style.transform = `translateY(-10px) scale(1.02)`;
+                setTimeout(() => {
+                  const rot = (idx - 4) * 3;
+                  (card as HTMLElement).style.transform = `rotate(${rot}deg)`;
+                }, 300);
+              }, idx * 80);
+            });
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    this.observer.observe(this.containerEl);
   }
 }

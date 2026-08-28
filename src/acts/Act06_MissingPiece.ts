@@ -2,6 +2,7 @@ import { soundEngine } from '../core/audio';
 
 export class Act06_MissingPiece {
   private containerEl!: HTMLElement;
+  private observer!: IntersectionObserver;
 
   public init(container: HTMLElement): void {
     this.containerEl = container;
@@ -85,14 +86,43 @@ export class Act06_MissingPiece {
     `;
 
     this.setupListeners();
+    this.setupScrollTrigger();
   }
 
   private setupListeners(): void {
     const rows = this.containerEl.querySelectorAll('.timeline-track-row');
     rows.forEach((row, idx) => {
-      row.addEventListener('mouseenter', () => {
-        soundEngine.playHoverChirp(440 + idx * 80);
-      });
+      const activate = () => {
+        soundEngine.playHoverChirp(440 + idx * 70);
+      };
+      row.addEventListener('mouseenter', activate);
+      row.addEventListener('click', activate);
     });
+  }
+
+  private setupScrollTrigger(): void {
+    const rows = this.containerEl.querySelectorAll('.timeline-track-row');
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            rows.forEach((row, idx) => {
+              setTimeout(() => {
+                (row as HTMLElement).style.transform = 'translateX(8px)';
+                (row as HTMLElement).style.borderColor = 'var(--accent-vermillion)';
+                setTimeout(() => {
+                  (row as HTMLElement).style.transform = 'translateX(0)';
+                  (row as HTMLElement).style.borderColor = 'var(--ink-border)';
+                }, 350);
+              }, idx * 120);
+            });
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    this.observer.observe(this.containerEl);
   }
 }
