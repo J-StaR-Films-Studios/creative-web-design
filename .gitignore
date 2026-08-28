@@ -1,12 +1,21 @@
 # Dependencies
 node_modules/
 .pnpm-store/
+*/node_modules/
 
-# Production builds
+# Production builds and static exports
 dist/
 build/
 .next/
 out/
+*/dist/
+*/build/
+*/.next/
+*/out/
+public/gallery/
+
+# TypeScript build info cache
+*.tsbuildinfo
 
 # Environment and local configs
 .env
